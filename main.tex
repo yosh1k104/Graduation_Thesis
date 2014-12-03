@@ -1,0 +1,76 @@
+%\documentclassreport]{jsbook}
+\documentclass[report, 11pt]{jsbook}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{okumacro}
+\usepackage{ascmac}
+\usepackage{url}
+%\usepackage{listings,jlisting}
+\usepackage{listings}%,jlisting}
+\usepackage{slashbox}
+
+\lstset{
+    language=Java,
+    basicstyle=\ttfamily\scriptsize,
+    commentstyle=\textit,
+    classoffset=1,
+    keywordstyle=\bfseries,
+    frameround=tttt,
+    frame=single,
+    framesep=5pt,
+    showstringspaces=false,
+    %numbers=left,
+    breaklines=true,
+    stepnumber=1,
+    numberstyle=\scriptsize,
+    tabsize=2,
+    xrightmargin=0zw,
+    xleftmargin=0zw,
+}
+
+
+\setcounter{tocdepth}{2}
+
+\setcounter{secnumdepth}{5}
+\makeatletter
+\newcommand{\subsubsubsection}{\@startsection{paragraph}{4}{\z@}%
+    {1.5\baselineskip \@plus.5\dp0 \@minus.2\dp0}%
+    {.5\baselineskip \@plus2.3\dp0}%
+    {\reset@font\normalsize\bfseries}
+}
+\newcommand{\subsubsubsubsection}{\@startsection{subparagraph}{5}{\z@}%
+    {1.5\baselineskip \@plus.5\dp0 \@minus.2\dp0}%
+    {.5\baselineskip \@plus2.3\dp0}%
+    {\reset@font\normalsize\itshape}
+}
+\makeatother
+\setcounter{tocdepth}{5}
+
+\begin{document}
+
+\input{title.tex}
+
+\frontmatter
+\input{abstract.tex}
+\tableofcontents
+\listoffigures
+\listoftables
+
+\mainmatter
+\input{1.tex}
+\input{2.tex}
+\input{3.tex}
+\input{4.tex}
+\input{5.tex}
+\input{6.tex}
+\input{7.tex}
+
+\input{thanks.tex}
+\input{bib.tex}
+
+\appendix
+%\input{bayes.tex}
+%\input{appendix.tex}
+%\input{appendix2.tex}
+%\input{appendix3.tex}
+
+\end{document}

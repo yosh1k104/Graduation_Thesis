@@ -1,0 +1,150 @@
+\chapter{Contiki - a Lightweight and Flexible Operating System for Tiny Networked Sensors}
+\begin{large}
+\begin{quote}
+本章では，最初に，本研究が提案するT-Ringという公衆センサデータ管理システムにおける，時間概念の扱いと，それに伴った保存アルゴリズムの概念説明を行う．次に，集中管理とSynapseとのデータ管理の時間的密度と計算コストの比較を行う．詳細な設計については次章で解説する．
+
+\end{quote}
+\end{large}
+\clearpage
+
+\section{Protothreads}
+既に述べたように，イベント駆動型は組み込みシステムやセンサネットワークに対して，
+主流なオペレーティングシステムとなっている．
+しかし，イベント駆動型はメモリのオーバヘッド低く維持できる一方で，
+ユーザが一連の処理を細かい処理に分割しなければならないため，
+プログラムが書き辛いという問題が発生する．
+%TinyOSの例
+Protothreadsはイベント駆動型プログラムをマルチスレッド型のように記述することができるため，
+メモリのオーバヘッドを抑えつつ，
+イベント駆動型の欠点を補うことが可能となる．
+本節では，Protothreadsの機能について詳しく述べる．
+
+\subsection{メモリ}
+マルチスレッド型のオペレーティングシステムでは，
+それぞれのスレッドにそれぞれのスタックを必要とする．
+しかし，メモリが制限されているセンサネットワークのようなシステムでは，
+スタック用のメモリは静的に保持されなければならないため，
+このメモリを他の目的で使用することはできない．
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=110mm]{./images/threads_stack.eps}
+ \end{center}
+ \caption{一般的なスレッドモデルにおけるスタック}
+ \label{fig:threads_stack}
+\end{figure}
+
+それに対して，Protothreadsを使用した場合，
+すべてのプログラムは同じスタックを共有し，
+実行されることとなる．
+つまり，Protothreadsを利用しているオペレーティングシステムではそのような事態を防ぐために，
+マルチスレッドを実現しつつも，ひとつのスタックをあたかも複数個あるように見せかけている．
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=45mm]{./images/protothreads_stack.eps}
+ \end{center}
+ \caption{Protothreadsにおけるスタック}
+ \label{fig:protothreads_stack}
+\end{figure}
+
+
+\subsection{タスクの切り替え}
+一般的なマルチスレッド型のオペレーティングシステムは，
+タスクの割り込みがあった際には，
+レジスタの状態を保存することで変数の値を保持し，
+割り込まれたタスクの実行が終了したときに，
+再びレジスタから変数を読み込み，
+処理を途中から再開する．
+
+しかし，Protothreadsを使用した場合，
+状態をレジスタに保存することはせずに，
+戻り値を利用することでタスクのCPUの利用を放棄する．
+さらに，アプリケーション内の変数は静的な変数を採用しているため，
+低オーバヘッドを実現しつつ，一貫性を保っている．
+
+戻り値をもとにしたタスクの切り替えを行う際には，
+スケジューラに対してプログラムのファイルの行数をreturnし，
+各タスクがCPU利用権限を再度取得したとき，
+行数を条件分岐し，前回中断した箇所から実行を再開することとなる．
+
+ただし，現在実行中のタスクよりも優先度の高いタスクが実行待ちになった際に，
+他のマルチスレッドのオペレーティングシステムで実現されているように，
+ループ内の処理を実行しているタスクに割り込みをし，
+タスクを切り替えて実行することはできない．
+
+現在では，タイマー割り込みを目的とした利用をされていない．
+タイマーと現在時刻を比較し，
+発火時刻を過ぎている場合，タスクを実行待ちのキューへと加える．
+タイマーを実行するタスクは他のタスクと同じ優先度で周期的に実行される．
+
+\section{イベント}
+イベントモデルであるContikiでは、イベントが発生するとプロセスが実行される。
+本節ではContikiで扱われる非同期イベントと同期イベントの違いについて説明する。
+
+
+\subsection{非同期イベント}
+非同期イベントが発生すると、
+そのイベントはカーネルのイベントキューに挿入され、
+実行時にFirst In First Outで呼び出される。
+
+Asynchronous events are delivered to the receiving process some time after they have been posted.
+Between their posting and their delivery, 
+the asynchronous events are held on an event queue inside the Contiki kernel.
+
+The events on the event queue are delivered to the receiving process by the kernel.
+The kernel loops through the event queue and 
+delivers the events to the processes on the queue by invoking the processes.
+
+The receiver of an asynchronous event can either be a specific process, or all running processes.
+When the receiver is a specific process, the kernel invokes this process to deliver the event.
+When the receiver of an event is set to be all processes in the system, the kernel sequentially delivers the same event to all processes, 
+one after another.
+
+Asynchronous events are posted with the process\_post() function. The internals of the process\_post() function is simple.
+It first checks the size of the current event queue to determine if there is room for the event on the queue.
+If not, the function returns an error.
+If there is room for the event on the queue,
+the function inserts the event at the end of the event queue and returns.
+
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=115mm]{./images/fifo.eps}
+ \end{center}
+ \caption{非同期イベントの実行}
+ \label{fig:asynchronous_event}
+\end{figure}
+
+
+\subsection{同期イベント}
+非同期イベントに対して、
+同期イベントでは
+
+Unlike asynchronous events, 
+synchronous events are delivered directly when they are posted.
+Synchronous events can only be posted to a specific processes.
+
+Because synchronous events are delivered immediately,
+posting a synchronous event is functionally equivalent to a function call: 
+the process to which the event is delivered is directly invoked, 
+and the process that posted the event is blocked until the receiving process has finished processing the event.
+The receiving process is, however, not informed whether the event was posted synchronously or asynchronously.
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=40mm]{./images/synchronous_event.eps}
+ \end{center}
+ \caption{同期イベントの実行}
+ \label{fig:synchronous_event}
+\end{figure}
+
+
+\section{ポーリング}
+
+\section{イベントタイマー}
+Contikiオペレーティングシステムには
+
+
+
+\section{まとめ}
+本章では，まず，保存ピアの計算量を削減し，Synapseよりもデータ管理の時間的密度が高いアルゴリズムを提案することを述べた．次に，T-Ringにおいて時間という属性をDHTにおける保存ピアの決定における一つ要素としてではなく，保存ピアの変更を行うための要素として扱うことを述べた．そして，時間的密度，計算コストの観点から集中管理，Synapse，T-Ringの3つの手法の比較を行った．また，センサデータの時間的特殊性に着目した多次元センサデータ分散管理システムであるT-Ringの詳細な設計概念，設計実装について述べた．T-RingはP2Pのトポロジとして，代表的なアルゴリズムであるChordに準拠した1Dトーラスを用いている．保存ピアの参加や離脱なども同様にChordに準拠している．また，多次元データを扱うにあたり，Z-orderにより1次元化に言及した．時間的特殊性については，chunkとSPという2つの時間概念を導入し，保存ピア変更の基準とした．また，ユーザがT-Ringシステムを用いて，データ取得のクエリを送る際の，形式を定義した．
+
+
+
