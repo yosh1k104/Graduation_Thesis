@@ -14,14 +14,14 @@
 ユーザが一連の処理を細かい処理に分割しなければならないため，
 プログラムが書き辛いという問題が発生する．
 %TinyOSの例
-Protothreadsはイベント駆動型プログラムをマルチスレッド型のように記述することができるため，
+Protothreads\cite{Dunkels:2006:PSE:1182807.1182811}はイベント駆動型プログラムをマルチスレッド型のように記述することができるため，
 メモリのオーバヘッドを抑えつつ，
 イベント駆動型の欠点を補うことが可能となる．
 本節では，Protothreadsの機能について詳しく述べる．
 
 \subsection{メモリ}
 マルチスレッド型のオペレーティングシステムでは，
-それぞれのスレッドにそれぞれのスタックを必要とする．
+図\ref{fig:threads_stack}のようにそれぞれのスレッドにそれぞれのスタックを必要とする．
 しかし，メモリが制限されているセンサネットワークのようなシステムでは，
 スタック用のメモリは静的に保持されなければならないため，
 このメモリを他の目的で使用することはできない．
@@ -33,7 +33,8 @@ Protothreadsはイベント駆動型プログラムをマルチスレッド型�
  \label{fig:threads_stack}
 \end{figure}
 
-それに対して，Protothreadsを使用した場合，
+それに対して，Protothreadsにおけるスタックを図\ref{fig:protothreads_stack}に示す。
+Protothreadsを使用した場合，
 すべてのプログラムは同じスタックを共有し，
 実行されることとなる．
 つまり，Protothreadsを利用しているオペレーティングシステムではそのような事態を防ぐために，
@@ -94,16 +95,25 @@ The events on the event queue are delivered to the receiving process by the kern
 The kernel loops through the event queue and 
 delivers the events to the processes on the queue by invoking the processes.
 
+
+
 The receiver of an asynchronous event can either be a specific process, or all running processes.
 When the receiver is a specific process, the kernel invokes this process to deliver the event.
-When the receiver of an event is set to be all processes in the system, the kernel sequentially delivers the same event to all processes, 
+When the receiver of an event is set to be all processes in the system,
+the kernel sequentially delivers the same event to all processes, 
 one after another.
 
-Asynchronous events are posted with the process\_post() function. The internals of the process\_post() function is simple.
-It first checks the size of the current event queue to determine if there is room for the event on the queue.
-If not, the function returns an error.
-If there is room for the event on the queue,
-the function inserts the event at the end of the event queue and returns.
+非同期イベントはprocess\_post()関数によってポストされる。
+process\_post()関数ははじめにキュー内にイベントのためのメモリ空間があるかどうかを決定するために、
+現在のイベントキューのサイズを確認する。
+もしメモリに空きがなければ、この関数はエラーを返し、
+メモリに空きがあった際には、イベントをキューの最後に挿入する。
+
+%Asynchronous events are posted with the process\_post() function. The internals of the process\_post() function is simple.
+%It first checks the size of the current event queue to determine if there is room for the event on the queue.
+%If not, the function returns an error.
+%If there is room for the event on the queue,
+%the function inserts the event at the end of the event queue and returns.
 
 \begin{figure}[htbp]
  \begin{center}
@@ -115,12 +125,18 @@ the function inserts the event at the end of the event queue and returns.
 
 
 \subsection{同期イベント}
+When a synchronous event is posted, the event is immediately delivered to the receiving process.
+
 非同期イベントに対して、
-同期イベントでは
+同期イベントはポストされたとき、
+同期イベント
 
 Unlike asynchronous events, 
 synchronous events are delivered directly when they are posted.
 Synchronous events can only be posted to a specific processes.
+
+同期イベントは即座に実行されるため、
+同期イベントがポストされることは関数を呼び出すことに等しい。
 
 Because synchronous events are delivered immediately,
 posting a synchronous event is functionally equivalent to a function call: 
@@ -137,6 +153,20 @@ The receiving process is, however, not informed whether the event was posted syn
 
 
 \section{ポーリング}
+ポーリングリクエストはその他のイベントと異なる
+ポールされたプロセスはprocess\_poll()関数によって呼び出され、
+この関数がプロセス上で呼び出されるとそのプロセスは可能な限り早急にスケジューリングされる。
+
+A poll request is a special type of event. A process is polled by calling the function process\_poll().
+Calling this function on a process causes the process to be scheduled as quickly as possible.
+The process is passed a special event that informs the process that it has been polled.
+
+ポーリングはインタラプトからプロセスを実行する手法であり、
+process\_poll()関数はプリエンプティブモードから安全に呼び出されるプロセスモジュールにおける、
+唯一の関数である。
+
+%Polling is the way to make a process run from an interrupt.
+%The process\_poll() function is the only function in the process module that is safe to call from preemptive mode.
 
 \section{イベントタイマー}
 Contikiオペレーティングシステムには
