@@ -33,7 +33,7 @@ Protothreads\cite{Dunkels:2006:PSE:1182807.1182811}はイベント駆動型プ�
  \label{fig:threads_stack}
 \end{figure}
 
-それに対して，Protothreadsにおけるスタックを図\ref{fig:protothreads_stack}に示す。
+それに対して，Protothreadsにおけるスタックを図\ref{fig:protothreads_stack}に示す．
 Protothreadsを使用した場合，
 すべてのプログラムは同じスタックを共有し，
 実行されることとなる．
@@ -78,14 +78,14 @@ Protothreadsを使用した場合，
 タイマーを実行するタスクは他のタスクと同じ優先度で周期的に実行される．
 
 \section{イベント}
-イベントモデルであるContikiでは、イベントが発生するとプロセスが実行される。
-本節ではContikiで扱われる非同期イベントと同期イベントの違いについて説明する。
+イベントモデルであるContikiでは，イベントが発生するとプロセスが実行される．
+本節ではContikiで扱われる非同期イベントと同期イベントの違いについて説明する．
 
 
 \subsection{非同期イベント}
-非同期イベントが発生すると、
-そのイベントはカーネルのイベントキューに挿入され、
-実行時にFirst In First Outで呼び出される。
+非同期イベントが発生すると，
+そのイベントはカーネルのイベントキューに挿入され，
+実行時にFirst In First Outで呼び出される．
 
 Asynchronous events are delivered to the receiving process some time after they have been posted.
 Between their posting and their delivery, 
@@ -103,11 +103,11 @@ When the receiver of an event is set to be all processes in the system,
 the kernel sequentially delivers the same event to all processes, 
 one after another.
 
-非同期イベントはprocess\_post()関数によってポストされる。
-process\_post()関数ははじめにキュー内にイベントのためのメモリ空間があるかどうかを決定するために、
-現在のイベントキューのサイズを確認する。
-もしメモリに空きがなければ、この関数はエラーを返し、
-メモリに空きがあった際には、イベントをキューの最後に挿入する。
+非同期イベントはprocess\_post()関数によってポストされる．
+process\_post()関数ははじめにキュー内にイベントのためのメモリ空間があるかどうかを決定するために，
+現在のイベントキューのサイズを確認する．
+もしメモリに空きがなければ，この関数はエラーを返し，
+メモリに空きがあった際には，イベントをキューの最後に挿入する．
 
 %Asynchronous events are posted with the process\_post() function. The internals of the process\_post() function is simple.
 %It first checks the size of the current event queue to determine if there is room for the event on the queue.
@@ -127,16 +127,16 @@ process\_post()関数ははじめにキュー内にイベントのためのメ�
 \subsection{同期イベント}
 When a synchronous event is posted, the event is immediately delivered to the receiving process.
 
-非同期イベントに対して、
-同期イベントはポストされたとき、
+非同期イベントに対して，
+同期イベントはポストされたとき，
 同期イベント
 
 Unlike asynchronous events, 
 synchronous events are delivered directly when they are posted.
 Synchronous events can only be posted to a specific processes.
 
-同期イベントは即座に実行されるため、
-同期イベントがポストされることは関数を呼び出すことに等しい。
+同期イベントは即座に実行されるため，
+同期イベントがポストされることは関数を呼び出すことに等しい．
 
 Because synchronous events are delivered immediately,
 posting a synchronous event is functionally equivalent to a function call: 
@@ -154,22 +154,54 @@ The receiving process is, however, not informed whether the event was posted syn
 
 \subsection{ポーリング}
 ポーリングリクエストはその他のイベントと異なる
-ポールされたプロセスはprocess\_poll()関数によって呼び出され、
-この関数がプロセス上で呼び出されるとそのプロセスは可能な限り早急にスケジューリングされる。
+ポールされたプロセスはprocess\_poll()関数によって呼び出され，
+この関数がプロセス上で呼び出されるとそのプロセスは可能な限り早急にスケジューリングされる．
 
 A poll request is a special type of event. A process is polled by calling the function process\_poll().
 Calling this function on a process causes the process to be scheduled as quickly as possible.
 The process is passed a special event that informs the process that it has been polled.
 
-ポーリングはインタラプトからプロセスを実行する手法であり、
-process\_poll()関数はプリエンプティブモードから安全に呼び出されるプロセスモジュールにおける、
-唯一の関数である。
+ポーリングはインタラプトからプロセスを実行する手法であり，
+process\_poll()関数はプリエンプティブモードから安全に呼び出されるプロセスモジュールにおける，
+唯一の関数である．
 
 %Polling is the way to make a process run from an interrupt.
 %The process\_poll() function is the only function in the process module that is safe to call from preemptive mode.
 
 \section{イベントタイマー}
 Contikiオペレーティングシステムには
+
+
+
+\section{問題意識}
+イベント駆動モデルではタスクの中断をしないことを前提に設計されているため，
+現在のセンサネットワーク用のオペレーティングシステムでは省資源性かつ低オーバヘッドであることと，
+リアルタイム性のサポートはトレードオフの関係にある．
+しかし，ターゲットトラッキングなどの状況においては，
+通常時は省資源性かつ低オーバヘッドを実現し，
+イベントが生じた際にはリアルタイム処理を行うことが必要となってくる．
+それにも関わらず，現在双方を両立可能としたセンサネットワーク用のオペレーティングシステムは存在していない．
+
+また，Protothreadsが
+%イベント駆動型のオペレーティングシステムに実装されていながら，
+マルチスレッド型のオペレーティングシステムとの親和性があると推測できることは既に述べたが，
+既存のProtothreadsの実装ではイベントに優先度をつけることなく，
+First In First Out(FIFO)の要領でイベントを呼び出している(図\ref{fig:asynchronous_event})．
+本研究では環境モニタリングやターゲットトラッキングを想定環境としているため，
+イベントの到着順でスケジューリングすることは好ましくない．
+例えば，優先度の高いタスクが到着したときに既に多量のタスクが実行待ち状態となっている場合に，
+高優先度のタスクが実行される頃には，既にそのタスクに実行する価値はない可能性がある．
+したがって，既存手法とは別のアルゴリズムを用いてスケジューリングする必要がある．
+
+
+%前述のとおり，一般的なマルチスレッド型のオペレーティングシステムでは，
+%スレッド切り替え時にレジスタの状態を保存するのに対して，
+
+Protothreadsでは，現在実行中のタスクよりも優先度の高いタスクが実行待ちになった際に，
+他のマルチスレッドのオペレーティングシステムで実現されているように，
+ループ内の処理を実行しているタスクに割り込みをし，
+タスクを切り替えて実行することはできない．
+これはタスクがreturnを発行するまでスケジューラが実行されないためである．
 
 
 
