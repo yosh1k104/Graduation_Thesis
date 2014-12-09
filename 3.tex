@@ -56,6 +56,13 @@ TinyOSではnesC\cite{Gay:2003:NLH:781131.781133}と呼ばれるイベント駆�
 
 %\subsection{A Dynamic Operating System for Sensor Nodes}
 \subsection{SOS}
+TinyOSがモノリシックなシステムイメージを持っていたのに対し，
+SOS\cite{Han:2005:DOS:1067170.1067188}は
+イベント駆動型オペレーティングシステムに動的モジュールの機能を実現したものである．
+SOSではカーネルから動的モジュールをロードする時に関数の型チェックを行うことで
+関数の型違反に伴うバグを防ぐ仕組みを取り入れている．
+
+
 
 
 \section{スレッドモデル}
