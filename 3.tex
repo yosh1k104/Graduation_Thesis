@@ -2,6 +2,7 @@
 \begin{large}
 \begin{quote}
 本章では，最初にセンサネットワークの一般公衆化を説明し，公衆センサデータ管理における必須な機能要件である地理的探索について述べる．次に，公衆センサデータ管理のシステム設計の際の重要な概念であるデータ管理の時間的密度を解説し，最後にセンサデータの時間的特殊性とそれに起因する公衆センサデータ管理の問題点を述べる．
+%本章では、
 \end{quote}
 \end{large}
 \clearpage
@@ -39,7 +40,18 @@ run-to-completion で実行する形態のオペレーティングシステム�
 
 %\subsection{TinyOS: An Operating System for Sensor Networks}
 \subsection{TinyOS}
+この中で代表的なものがTinyOS\cite{Hill:2000:SAD:356989.356998}\cite{Levis04tinyos:an}である．
+TinyOSはカリフォルニア大学バークレー校のSmartDust Projectで開発されたオペレーティングシステムである．
+現在無線センサネットワークの標準的なオペレーティングシステムとして扱われており，
+Crossbow社から発売されているMICA2やMICAz\cite{Hill:2002:MWP:623308.624560}，
+Telos\cite{Polastre:2005:TEU:1147685.1147744}，iMote\cite{Nachman:2005:IMP:1147685.1147760}上で動作する．
+TinyOSはCPUの特別な機能を使用せずに実装可能であるため，移植性が高く，
+ATMELのAVR128LやTexsusのMSP430，ARM7などさまざまなCPUに移植されている．
 
+TinyOSではnesC\cite{Gay:2003:NLH:781131.781133}と呼ばれるイベント駆動型の新しい言語で
+複数のイベントハンドラを 1 つのモジュールとして設計可能な機能を提供することで
+イベントモデルの持つプログラムの開発のし辛さを提供している．
+さらに，nesCはイベント駆動型に特化した最適化を行っているので省資源性も実現される．
 
 
 %\subsection{A Dynamic Operating System for Sensor Nodes}
@@ -106,8 +118,8 @@ run-to-completion で実行する形態のオペレーティングシステム�
   \caption{オペレーティングシステムの比較}
   \begin{tabular}{|c||c|c|c|c|} \hline
     \backslashbox{}{} & \multicolumn{2}{|c|}{メリット} & \multicolumn{2}{|c|}{デメリット} \\ \hline \hline
-    TinyOS & 省資源 & 低オーバヘッド & リアルタイム性の非サポート & プログラムが記述しにくい \\ \hline
-    Nano-RK & \multicolumn{2}{|c|}{リアルタイム性のサポート} & 資源の消費が大きい & 高オーバヘッド \\ \hline
+    イベントモデル & 省資源 & 低オーバヘッド & リアルタイム性の非サポート & プログラムが記述しにくい \\ \hline
+    スレッドモデル & \multicolumn{2}{|c|}{リアルタイム性のサポート} & 資源の消費が大きい & 高オーバヘッド \\ \hline
   \end{tabular}
   \label{tab:merit_and_demerit}
 \end{table}
