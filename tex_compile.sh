@@ -8,7 +8,8 @@ PDFFILE="main.pdf"
 #-----------------
 
 platex ${TEXFILE}
-jbibtex ${AUXFILE}
+#jbibtex ${AUXFILE}
+pbibtex ${AUXFILE}
 platex ${TEXFILE}
 platex ${TEXFILE}
 dvipdfmx ${DVIFILE}
@@ -22,5 +23,6 @@ rm ${AUXFILE}.log
 rm ${AUXFILE}.lot
 rm ${AUXFILE}.toc
 
+cp ${PDFFILE} /home/ysk/.public_html/
 #rsync -avz --delete . romen@dali.ht.sfc.keio.ac.jp:/home/romen/graduation_thesis/
 #rsync -avz --delete . ysk@dali.ht.sfc.keio.ac.jp:/home/ysk/
