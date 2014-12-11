@@ -47,11 +47,66 @@ Crossbow社から発売されているMica2やMicaZ\cite{Hill:2002:MWP:623308.62
 Telos\cite{Polastre:2005:TEU:1147685.1147744}，iMote\cite{Nachman:2005:IMP:1147685.1147760}上で動作する．
 TinyOSはCPUの特別な機能を使用せずに実装可能であるため，移植性が高く，
 ATMELのAVR128LやTexsusのMSP430，ARM7などさまざまなCPUに移植されている．
+TinyOSのアーキテクチャを図\ref{fig:system_conf_of_tinyos}に示す．
+
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=100mm]{./images/system_conf_of_tinyos.eps}
+ \end{center}
+ \caption{TinyOS アーキテクチャ}
+ \label{fig:system_conf_of_tinyos}
+\end{figure}
 
 TinyOSではnesC\cite{Gay:2003:NLH:781131.781133}と呼ばれるイベント駆動型の新しい言語で
-複数のイベントハンドラを 1 つのモジュールとして設計可能な機能を提供することで
-イベントモデルの持つプログラムの開発のし辛さを提供している．
-さらに，nesCはイベント駆動型に特化した最適化を行っているので省資源性も実現される．
+複数のイベントハンドラを1つのモジュールとして設計可能な機能を提供している．
+図にnesC言語がコンパイルされて実行されるまでの流れを示す．
+nesC言語はnesCコンパイラによってC言語のコードに変換された後，
+Cコンパイラによって実行形式へと変換される．
+nesC言語を採用することによって，
+イベントモデルの持つプログラムの開発のし辛さを提供し，
+新しい言語を学ばなければならないという手間がかかってしまうものの，
+nesCはイベント駆動型に特化した最適化を行っているため省資源性を実現している．
+
+
+%Earlier versions of TinyOS supported 
+%a non-preemptive First-In-First-Out (FIFO) scheduling algorithm.
+%Therefore, those versions of TinyOS do not support real-time application. 
+%The core of the TinyOS execution model are tasks that run to completion in a FIFO manner.
+%Since TinyOS supports only non preemptive scheduling, 
+%task must obey run to completion semantics. 
+%Tasks run to completion with respect to other task 
+%but they are not atomic with respect to interrupt handlers, commands, and 
+%events they invoke. 
+%Since TinyOS uses FIFO scheduling, 
+%disadvantages associated with FIFO scheduling are also associated with the TinyOS scheduler. 
+%The wait time for a task depends on the task’s arrival time. 
+%FIFO scheduling can be unfair to latter tasks especially 
+%when short tasks are waiting behind longer ones.
+%In [3], the authors claim that they have added support 
+%for an Earliest Deadline First (EDF) scheduling algorithm in TinyOS, 
+%to facilitate real-time applications. 
+%The EDF scheduling algorithm does not produce a feasible schedule 
+%when tasks content for resources. 
+%Thus, TinyOS does not provide a solid real-time scheduling algorithm 
+%if different threads content for resources. 
+
+%TinyOS does not provide any explicit support for real-time applications. 
+%As we already discussed in the scheduling section above, 
+%tasks in TinyOS observe run to completion semantics in a FIFO manner, 
+%hence in its original form, 
+%TinyOS is not a good choice for sensor networks that are being deployed 
+%to monitor real-time phenomena. 
+%An effort has been made to implement an Earliest Deadline First (EDF) 
+%process scheduling algorithm 
+%and it has been made available in newer versions of TinyOS. 
+%However, it has been shown that the EDF algorithm cannot produce a feasible schedule 
+%when tasks content for resources. 
+%In the nutshell, TinyOS is not a strong choice for real-time applications. 
+%TinyOS does not provide any specific MAC, network, or transport layers protocol implementations
+%that support Quality of Service requirements of real-time multimedia streams. 
+%At the MAC layer, TinyOS supports TDMA, 
+%which can be fine-tuned depending upon the requirements of an application 
+%to support multimedia traffic streams.
 
 
 
@@ -119,7 +174,7 @@ Nano-RKのアーキテクチャは図\ref{fig:system_conf_of_nrk}のとおりで
 
 \begin{figure}[htbp]
  \begin{center}
-  \includegraphics[width=120mm]{./images/system_conf_of_nrk.eps}
+  \includegraphics[width=100mm]{./images/system_conf_of_nrk.eps}
  \end{center}
  \caption{Nano-RK アーキテクチャ}
  \label{fig:system_conf_of_nrk}
