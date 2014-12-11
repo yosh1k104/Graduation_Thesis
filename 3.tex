@@ -2,16 +2,16 @@
 \begin{large}
 \begin{quote}
 本章では，最初にセンサネットワークの一般公衆化を説明し，公衆センサデータ管理における必須な機能要件である地理的探索について述べる．次に，公衆センサデータ管理のシステム設計の際の重要な概念であるデータ管理の時間的密度を解説し，最後にセンサデータの時間的特殊性とそれに起因する公衆センサデータ管理の問題点を述べる．
-%本章では、
+%本章では，
 \end{quote}
 \end{large}
 \clearpage
 
 
 %\section{無線センサネットワークにおけるオペレーティングシステム}
-%無線センサネットワークのオペレーティングシステムには主に2種類あり、
-%イベントモデルとスレッドモデルが存在している。
-%無線センサネットワーク用のオペレーティングシステムではイベントモデルが主流となっている。
+%無線センサネットワークのオペレーティングシステムには主に2種類あり，
+%イベントモデルとスレッドモデルが存在している．
+%無線センサネットワーク用のオペレーティングシステムではイベントモデルが主流となっている．
 
 \section{イベントモデル}
 イベントモデルで構築されたオペレーティングシステムは全てのタスクをイベントによって起動し，
@@ -43,7 +43,7 @@ run-to-completion で実行する形態のオペレーティングシステム�
 この中で代表的なものがTinyOS\cite{Hill:2000:SAD:356989.356998}\cite{Levis04tinyos:an}である．
 TinyOSはカリフォルニア大学バークレー校のSmartDust Projectで開発されたオペレーティングシステムである．
 現在無線センサネットワークの標準的なオペレーティングシステムとして扱われており，
-Crossbow社から発売されているMICA2やMICAz\cite{Hill:2002:MWP:623308.624560}，
+Crossbow社から発売されているMica2やMicaZ\cite{Hill:2002:MWP:623308.624560}，
 Telos\cite{Polastre:2005:TEU:1147685.1147744}，iMote\cite{Nachman:2005:IMP:1147685.1147760}上で動作する．
 TinyOSはCPUの特別な機能を使用せずに実装可能であるため，移植性が高く，
 ATMELのAVR128LやTexsusのMSP430，ARM7などさまざまなCPUに移植されている．
@@ -52,6 +52,7 @@ TinyOSではnesC\cite{Gay:2003:NLH:781131.781133}と呼ばれるイベント駆�
 複数のイベントハンドラを 1 つのモジュールとして設計可能な機能を提供することで
 イベントモデルの持つプログラムの開発のし辛さを提供している．
 さらに，nesCはイベント駆動型に特化した最適化を行っているので省資源性も実現される．
+
 
 
 %\subsection{A Dynamic Operating System for Sensor Nodes}
@@ -86,6 +87,43 @@ SOSではカーネルから動的モジュールをロードする時に関数�
 
 %\subsection{Nano-RK: an Energy-aware Resource-centric RTOS for Sensor Networks}
 \subsection{Nano-RK}
+Nano-RK\cite{Eswaran:2005:NER:1106608.1106672}は，
+無線センサネットワークにおけるマルチタスク処理機能を備えた
+リアルタイムオペレーティングシステムであり，
+%Nano-RK [31] is a fixed, preemptive multitasking real-time OS for WSNs. 
+%Nano-RKを設計することで，
+リソースの使用が制限された無線センサネットワークにおける，
+マルチタスク処理，
+優先度順位スケジューリングや
+マルチホップネットワークのサポートを実現する．
+%The design goals for Nano-RK are multitasking, support for multi-hop networking, 
+%support for priority-based scheduling, 
+%timeliness and schedulability, extended WSN lifetime, 
+%application resource usage limits, and small footprint.
+2KbのRAMと18KbのROMを使用し，
+Rate Monotonic Scheduleingと
+Rate Harmonized Scheduling\cite{Rowe:2008:RSS:1475690.1475895}を利用することによって，
+ハードリアルタイムアプリケーションとソフトリアルタイムアプリケーションの
+両方をサポートする．
+%Nano-RK uses 2 Kb of RAM and 18 Kb of ROM. Nano-RK provides support for CPU, 
+%sensors, and network bandwidth reservations.
+%Nano-RK supports hard and soft real-time applications 
+%by the means of different real-time scheduling algorithms, 
+%e.g., rate monotonic scheduling and rate harmonized scheduling [32]. 
+現在動作確認がとれているセンシングプラットフォームとして，
+FireFly\cite{Rowe_firefly:a}と
+MicaZ\cite{Hill:2002:MWP:623308.624560}が挙げられる．
+Nano-RKのアーキテクチャは図\ref{fig:system_conf_of_nrk}のとおりである．
+%Nano-RK provides networking support through socket-like abstraction. 
+%Nano-RK supports FireFly [33] and MicaZ sensing platforms. 
+
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=120mm]{./images/system_conf_of_nrk.eps}
+ \end{center}
+ \caption{Nano-RK アーキテクチャ}
+ \label{fig:system_conf_of_nrk}
+\end{figure}
 
 
 
@@ -103,22 +141,6 @@ TinyOS\cite{Hill:2000:SAD:356989.356998}\cite{Levis04tinyos:an}を
 
 
 
-%ジョブの実行を設定された時間通りに作動させることをリアルタイム処理という．
-%リアルタイム処理には主に
-%ハードリアルタイム処理と
-%ソフトリアルタイム処理，の2種類がある．
-%
-%
-%\subsection{ハードリアルタイム処理}
-%課せられた処理が期限内に終了しなかったとき，
-%システム全体に致命的なダメージが生じてしまうリアルタイム処理のことを
-%ハードリアルタイム処理という．
-%したがって，期限内での終了が保証されなければならないシステムに用いられる．
-%
-%\subsection{ソフトリアルタイム処理}
-%ソフトリアルタイム処理を行うシステムでは，
-%期限内に処理が終了しなくてもシステム全体に致命的なダメージを与えることはない．
-%ただし，処理自体の価値は終了期限とともに減少していく．
 
 
 \section{イベントモデルとスレッドモデルの比較}
@@ -140,6 +162,28 @@ TinyOS\cite{Hill:2000:SAD:356989.356998}\cite{Levis04tinyos:an}を
   \end{tabular}
   \label{tab:merit_and_demerit}
 \end{table}
+
+
+
+%\section{リアルタイムスケジューリング}
+%ジョブの実行を設定された時間通りに作動させることをリアルタイム処理という．
+%リアルタイム処理には主に
+%ハードリアルタイム処理と
+%ソフトリアルタイム処理，の2種類がある．
+%
+%
+%\subsection{ハードリアルタイム処理}
+%課せられた処理が期限内に終了しなかったとき，
+%システム全体に致命的なダメージが生じてしまうリアルタイム処理のことを
+%ハードリアルタイム処理という．
+%したがって，期限内での終了が保証されなければならないシステムに用いられる．
+%
+%\subsection{ソフトリアルタイム処理}
+%ソフトリアルタイム処理を行うシステムでは，
+%期限内に処理が終了しなくてもシステム全体に致命的なダメージを与えることはない．
+%ただし，処理自体の価値は終了期限とともに減少していく．
+
+
 
 \section{まとめ}
 本章では，まず，センサネットワークの一般公衆化について述べた．次いで，公衆センサデータがを扱ったシステム設計をする際に，データ管理の時間的密度という要素を考慮すべきであることを示した．そして，センサデータが時間的特殊性を持った多次元データであることを述べ，また，それに起因するセンサデータ管理における問題を提起した．
