@@ -82,93 +82,96 @@ Protothreadsを使用した場合，
 イベントモデルであるContikiでは，イベントが発生するとプロセスが実行される．
 本節ではContikiで扱われる非同期イベントと同期イベントの違いについて説明する．
 
+\subsubsection{非同期イベント}
 
-%\subsection{非同期イベント}
-%非同期イベントが発生すると，
-%そのイベントはカーネルのイベントキューに挿入され，
-%実行時にFirst In First Outで呼び出される．
-%
-%Asynchronous events are delivered to the receiving process some time after they have been posted.
-%Between their posting and their delivery, 
-%the asynchronous events are held on an event queue inside the Contiki kernel.
-%
-%The events on the event queue are delivered to the receiving process by the kernel.
-%The kernel loops through the event queue and 
-%delivers the events to the processes on the queue by invoking the processes.
-%
-%
-%
-%The receiver of an asynchronous event can either be a specific process, or all running processes.
-%When the receiver is a specific process, the kernel invokes this process to deliver the event.
-%When the receiver of an event is set to be all processes in the system,
-%the kernel sequentially delivers the same event to all processes, 
-%one after another.
-%
-%非同期イベントはprocess\_post()関数によってポストされる．
-%process\_post()関数ははじめにキュー内にイベントのためのメモリ空間があるかどうかを決定するために，
-%現在のイベントキューのサイズを確認する．
-%もしメモリに空きがなければ，この関数はエラーを返し，
-%メモリに空きがあった際には，イベントをキューの最後に挿入する．
-%
-%%Asynchronous events are posted with the process\_post() function. The internals of the process\_post() function is simple.
-%%It first checks the size of the current event queue to determine if there is room for the event on the queue.
-%%If not, the function returns an error.
-%%If there is room for the event on the queue,
-%%the function inserts the event at the end of the event queue and returns.
-%
-%\begin{figure}[htbp]
-% \begin{center}
-%  \includegraphics[width=115mm]{./images/fifo.eps}
-% \end{center}
-% \caption{非同期イベントの実行}
-% \label{fig:asynchronous_event}
-%\end{figure}
-%
-%
-%\subsection{同期イベント}
-%When a synchronous event is posted, the event is immediately delivered to the receiving process.
-%
-%非同期イベントに対して，
-%同期イベントはポストされたとき，
-%同期イベント
-%
-%Unlike asynchronous events, 
-%synchronous events are delivered directly when they are posted.
-%Synchronous events can only be posted to a specific processes.
-%
-%同期イベントは即座に実行されるため，
-%同期イベントがポストされることは関数を呼び出すことに等しい．
-%
-%Because synchronous events are delivered immediately,
-%posting a synchronous event is functionally equivalent to a function call: 
-%the process to which the event is delivered is directly invoked, 
-%and the process that posted the event is blocked until the receiving process has finished processing the event.
-%The receiving process is, however, not informed whether the event was posted synchronously or asynchronously.
-%\begin{figure}[htbp]
-% \begin{center}
-%  \includegraphics[width=40mm]{./images/synchronous_event.eps}
-% \end{center}
-% \caption{同期イベントの実行}
-% \label{fig:synchronous_event}
-%\end{figure}
-%
-%
-%\subsection{ポーリング}
-%ポーリングリクエストはその他のイベントと異なる
-%ポールされたプロセスはprocess\_poll()関数によって呼び出され，
-%この関数がプロセス上で呼び出されるとそのプロセスは可能な限り早急にスケジューリングされる．
-%
-%A poll request is a special type of event. A process is polled by calling the function process\_poll().
-%Calling this function on a process causes the process to be scheduled as quickly as possible.
-%The process is passed a special event that informs the process that it has been polled.
-%
-%ポーリングはインタラプトからプロセスを実行する手法であり，
-%process\_poll()関数はプリエンプティブモードから安全に呼び出されるプロセスモジュールにおける，
-%唯一の関数である．
-%
-%%Polling is the way to make a process run from an interrupt.
-%%The process\_poll() function is the only function in the process module that is safe to call from preemptive mode.
-%
+\vspace{0.5em}非同期イベントが発生すると，
+そのイベントはカーネルのイベントキューに挿入され，
+実行時にFirst In First Outで呼び出される．
+
+Asynchronous events are delivered to the receiving process some time after they have been posted.
+Between their posting and their delivery, 
+the asynchronous events are held on an event queue inside the Contiki kernel.
+
+The events on the event queue are delivered to the receiving process by the kernel.
+The kernel loops through the event queue and 
+delivers the events to the processes on the queue by invoking the processes.
+
+
+
+The receiver of an asynchronous event can either be a specific process, or all running processes.
+When the receiver is a specific process, the kernel invokes this process to deliver the event.
+When the receiver of an event is set to be all processes in the system,
+the kernel sequentially delivers the same event to all processes, 
+one after another.
+
+非同期イベントはprocess\_post()関数によってポストされる．
+process\_post()関数ははじめにキュー内にイベントのためのメモリ空間があるかどうかを決定するために，
+現在のイベントキューのサイズを確認する．
+もしメモリに空きがなければ，この関数はエラーを返し，
+メモリに空きがあった際には，イベントをキューの最後に挿入する．
+
+%Asynchronous events are posted with the process\_post() function. The internals of the process\_post() function is simple.
+%It first checks the size of the current event queue to determine if there is room for the event on the queue.
+%If not, the function returns an error.
+%If there is room for the event on the queue,
+%the function inserts the event at the end of the event queue and returns.
+
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=115mm]{./images/fifo.eps}
+ \end{center}
+ \caption{非同期イベントの実行}
+ \label{fig:asynchronous_event}
+\end{figure}
+
+
+\subsubsection{同期イベント}
+
+\vspace{0.5em}When a synchronous event is posted,
+the event is immediately delivered to the receiving process.
+
+非同期イベントに対して，
+同期イベントはポストされたとき，
+同期イベント
+
+Unlike asynchronous events, 
+synchronous events are delivered directly when they are posted.
+Synchronous events can only be posted to a specific processes.
+
+同期イベントは即座に実行されるため，
+同期イベントがポストされることは関数を呼び出すことに等しい．
+
+Because synchronous events are delivered immediately,
+posting a synchronous event is functionally equivalent to a function call: 
+the process to which the event is delivered is directly invoked, 
+and the process that posted the event is blocked until the receiving process has finished processing the event.
+The receiving process is, however, not informed whether the event was posted synchronously or asynchronously.
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=40mm]{./images/synchronous_event.eps}
+ \end{center}
+ \caption{同期イベントの実行}
+ \label{fig:synchronous_event}
+\end{figure}
+
+
+\subsubsection{ポーリング}
+
+\vspace{0.5em}ポーリングリクエストはその他のイベントと異なる
+ポールされたプロセスはprocess\_poll()関数によって呼び出され，
+この関数がプロセス上で呼び出されるとそのプロセスは可能な限り早急にスケジューリングされる．
+
+A poll request is a special type of event. A process is polled by calling the function process\_poll().
+Calling this function on a process causes the process to be scheduled as quickly as possible.
+The process is passed a special event that informs the process that it has been polled.
+
+ポーリングはインタラプトからプロセスを実行する手法であり，
+process\_poll()関数はプリエンプティブモードから安全に呼び出されるプロセスモジュールにおける，
+唯一の関数である．
+
+%Polling is the way to make a process run from an interrupt.
+%The process\_poll() function is the only function in the process module that is safe to call from preemptive mode.
+
 %\section{イベントタイマー}
 %Contikiオペレーティングシステムには
 
