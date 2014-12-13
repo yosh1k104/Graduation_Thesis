@@ -119,6 +119,31 @@ nesCはイベント駆動型に特化した最適化を行っているため省�
 %関数の型違反に伴うバグを防ぐ仕組みを取り入れている．
 
 \subsection{Contiki}
+Contiki\cite{Dunkels:2004:CLF:1032658.1034117}はC言語で記述された
+最も正統派のイベント駆動型オペレーティングシステムである．
+Contikiでは動的モジュールを実現するために
+ELF（Executable and Linkable Format）形式のファイルを
+ロード可能な仕組みを提供している\cite{Dunkels06run-timedynamic}．
+Contikiのアーキテクチャを図\ref{fig:system_conf_of_contiki}に示す．
+
+
+%Contiki [18], is a lightweight open source OS written in C for WSN sensor nodes. Contiki is a 
+%highly portable OS and it is build around an event-driven kernel. Contiki provides preemptive 
+%multitasking that can be used at the individual process level. A typical Contiki configuration 
+%consumes 2 kilobytes of RAM and 40 kilobytes of ROM. A full Contiki installation includes features 
+%like: multitasking kernel, preemptive multithreading, proto-threads, TCP/IP networking, IPv6, a 
+%Graphical User Interface, a web browser, a personal web server, a simple telnet client, a screensaver, 
+%and virtual network computing. 
+
+
+
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=80mm]{./images/system_conf_of_contiki.eps}
+ \end{center}
+ \caption{Contiki アーキテクチャ（参考：Operating Systems for Tiny Networked Sensors\cite{Dwivedi_operatingsystems}）}
+ \label{fig:system_conf_of_contiki}
+\end{figure}
 
 
 
@@ -297,8 +322,8 @@ MANTIS OSはC言語で実装されており，
 %システムにおける地理的探索の必要性について記した．さらに，センサデータ以外のコンテンツを扱うシステムとセンサデータを扱うシステムの対比を行い，広域センサデータ管理システムにおけるデータ管理の時間的密度という概念を説明し，最後に，センサデータの時間的特殊性を取り上げた後，それに起因するセンサデータ管理におけるデータ管理の時間的密度の高さという問題を提起した．
 
 
-イベント駆動モデルではタスクの中断をしないことを前提に設計されているため、
-現在のセンサネットワーク用のオペレーティングシステムでは省資源性かつ低オーバヘッドであることと、
+イベント駆動モデルではタスクの中断をしないことを前提に設計されているため，
+現在のセンサネットワーク用のオペレーティングシステムでは省資源性かつ低オーバヘッドであることと，
 リアルタイム性のサポートはトレードオフの関係にある.
 
 
