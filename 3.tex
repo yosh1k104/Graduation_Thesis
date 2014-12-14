@@ -135,6 +135,13 @@ Contikiのアーキテクチャを図\ref{fig:system_conf_of_contiki}に示す�
 %Graphical User Interface, a web browser, a personal web server, a simple telnet client, a screensaver, 
 %and virtual network computing. 
 
+Contikiにおいて，イベント駆動型の利点を失わずにスレッド形式で
+プログラムの書きやすさを実現したのがProtothreads\cite{Dunkels:2006:PSE:1182807.1182811}である．
+Protothreadsではイベントハンドラの中でスレッド的に動作させたい部分を
+PT\_BEGINとPT\_ENDで囲み，
+PT\_WAIT\_UNTILで条件付きブロックを行うことで，
+イベントハンドラ実行中でも他のタスクに切り換えることを可能にしている．
+このProtothreadsについては，\ref{sec:protothreads}において詳細に述べる．
 
 
 \begin{figure}[htbp]
