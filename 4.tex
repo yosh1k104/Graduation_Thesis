@@ -145,36 +145,36 @@ Protothreadsを使用した場合，
 
 \subsection{イベント}
 イベントモデルであるContikiでは，イベントを受け取るとプロセスが実行される．
-ここではContikiで扱われる非同期イベント、同期イベント、ポーリングの違いについて説明する．
+ここではContikiで扱われる非同期イベント，同期イベント，ポーリングの違いについて説明する．
 
 \subsubsection{非同期イベント}
 
-\vspace{0.5em}非同期イベントの概念図を図\ref{fig:asynchronous_event}に示す。
+\vspace{0.5em}非同期イベントの概念図を図\ref{fig:asynchronous_event}に示す．
 非同期イベントが発生すると，
 そのイベントはカーネルのイベントキューに挿入され，
-後ほどイベントとして受け取られる。
+後ほどイベントとして受け取られる．
 %実行時にFirst In First Outで呼び出される．
-%非同期イベントはポストされた後、
-非同期イベントはポストされてから受諾されるまでの間、
-Contikiカーネル内のイベントキューに保持される。
+%非同期イベントはポストされた後，
+非同期イベントはポストされてから受諾されるまでの間，
+Contikiカーネル内のイベントキューに保持される．
 %Asynchronous events are delivered to the receiving process some time after they have been posted.
 %Between their posting and their delivery, 
 %the asynchronous events are held on an event queue inside the Contiki kernel.
-イベントキュー内のイベントはカーネルによってイベント受信プロセスに送られ、
-カーネルはイベントキュー内を確認し、
-イベントを呼び出しているプロセスへとイベントを届ける。
-%カーネルはイベント発生によってイベントをイベントキューまで運び、
-%イベントキューをまとめる。
+イベントキュー内のイベントはカーネルによってイベント受信プロセスに送られ，
+カーネルはイベントキュー内を確認し，
+イベントを呼び出しているプロセスへとイベントを届ける．
+%カーネルはイベント発生によってイベントをイベントキューまで運び，
+%イベントキューをまとめる．
 %The events on the event queue are delivered to the receiving process by the kernel.
 %The kernel loops through the event queue and 
 %delivers the events to the processes on the queue by invoking the processes.
 
-非同期イベントの受信プロセスはある特定のプロセスである場合と、
-すべての実行中のプロセスである場合がある。
-イベントの受信者がある特定のプロセスだった場合、
-カーネルはイベントを届けるためにこのプロセスを呼び出す。
-イベントの受信者がシステム内のすべてのプロセスだった場合、
-カーネルは同じイベントをすべてのプロセスへと順次届けていく。
+非同期イベントの受信プロセスはある特定のプロセスである場合と，
+すべての実行中のプロセスである場合がある．
+イベントの受信者がある特定のプロセスだった場合，
+カーネルはイベントを届けるためにこのプロセスを呼び出す．
+イベントの受信者がシステム内のすべてのプロセスだった場合，
+カーネルは同じイベントをすべてのプロセスへと順次届けていく．
 %The receiver of an asynchronous event can either be a specific process, or all running processes.
 %When the receiver is a specific process, the kernel invokes this process to deliver the event.
 %When the receiver of an event is set to be all processes in the system,
@@ -206,13 +206,13 @@ process\_post関数ははじめにキュー内にイベントのためのメモ�
 
 \subsubsection{同期イベント}
 
-\vspace{0.5em}図\ref{fig:synchronous_event}は同期イベントにおける概念図である。
+\vspace{0.5em}図\ref{fig:synchronous_event}は同期イベントにおける概念図である．
 非同期イベントに対して，
 同期イベントはポストされたとき，
-即座にイベントとして受諾される。
+即座にイベントとして受諾される．
 %When a synchronous event is posted,
 %the event is immediately delivered to the receiving process.
-同期イベントはある特定のプロセスにのみポストされる点も非同期イベントとは異なっている。
+同期イベントはある特定のプロセスにのみポストされる点も非同期イベントとは異なっている．
 %Unlike asynchronous events, 
 %synchronous events are delivered directly when they are posted.
 %Synchronous events can only be posted to a specific processes.
@@ -221,12 +221,12 @@ process\_post関数ははじめにキュー内にイベントのためのメモ�
 同期イベントがポストされることは関数を呼び出すことに等しい．
 %Because synchronous events are delivered immediately,
 %posting a synchronous event is functionally equivalent to a function call: 
-すなわち、イベントを届けられたプロセスは直接よびだされ、
+すなわち，イベントを届けられたプロセスは直接よびだされ，
 イベントをポストしたプロセスは受信プロセスによるイベントの処理が終了するまで
-他の処理を行うことはできない。
+他の処理を行うことはできない．
 %the process to which the event is delivered is directly invoked, 
 %and the process that posted the event is blocked until the receiving process has finished processing the event.
-しかしながら、受信プロセスはイベントが同期的にポストされたか、非同期的にポストされたかを知らされない。
+しかしながら，受信プロセスはイベントが同期的にポストされたか，非同期的にポストされたかを知らされない．
 %The receiving process is, however, not informed whether the event was posted synchronously or asynchronously.
 
 \begin{figure}[htbp]
@@ -240,20 +240,21 @@ process\_post関数ははじめにキュー内にイベントのためのメモ�
 
 \subsubsection{ポーリング}
 
-\vspace{0.5em}ポーリングリクエストはその他のイベントと異なる
-ポールされたプロセスはprocess\_poll()関数によって呼び出され，
+\vspace{0.5em}ポーリングリクエストはその他のイベントと異なり，
+ポールされたプロセスはprocess\_poll関数によって呼び出され，
 この関数がプロセス上で呼び出されるとそのプロセスは可能な限り早急にスケジューリングされる．
-
-A poll request is a special type of event. A process is polled by calling the function process\_poll().
-Calling this function on a process causes the process to be scheduled as quickly as possible.
-The process is passed a special event that informs the process that it has been polled.
-
-ポーリングはインタラプトからプロセスを実行する手法であり，
-process\_poll()関数はプリエンプティブモードから安全に呼び出されるプロセスモジュールにおける，
-唯一の関数である．
-
+%ポーリングが行われたことをプロセスに知らせる特別なイベントを経由
+%A poll request is a special type of event. A process is polled by calling the function process\_poll().
+%Calling this function on a process causes the process to be scheduled as quickly as possible.
+%The process is passed a special event that informs the process that it has been polled.
+ポーリングはインタラプトからプロセスを実行させる手法のひとつであり，
+process\_poll関数はプリエンプティブモードから安全に呼び出される，
+プロセスモジュールにおける唯一の関数である．
 %Polling is the way to make a process run from an interrupt.
 %The process\_poll() function is the only function in the process module that is safe to call from preemptive mode.
+
+
+
 
 %\section{イベントタイマー}
 %Contikiオペレーティングシステムには
