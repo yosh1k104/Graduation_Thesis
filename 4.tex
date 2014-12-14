@@ -206,26 +206,29 @@ process\_post関数ははじめにキュー内にイベントのためのメモ�
 
 \subsubsection{同期イベント}
 
-\vspace{0.5em}非同期イベントに対して，
+\vspace{0.5em}図\ref{fig:synchronous_event}は同期イベントにおける概念図である。
+非同期イベントに対して，
 同期イベントはポストされたとき，
 即座にイベントとして受諾される。
-
-
-When a synchronous event is posted,
-the event is immediately delivered to the receiving process.
-
-Unlike asynchronous events, 
-synchronous events are delivered directly when they are posted.
-Synchronous events can only be posted to a specific processes.
+%When a synchronous event is posted,
+%the event is immediately delivered to the receiving process.
+同期イベントはある特定のプロセスにのみポストされる点も非同期イベントとは異なっている。
+%Unlike asynchronous events, 
+%synchronous events are delivered directly when they are posted.
+%Synchronous events can only be posted to a specific processes.
 
 同期イベントは即座に実行されるため，
 同期イベントがポストされることは関数を呼び出すことに等しい．
+%Because synchronous events are delivered immediately,
+%posting a synchronous event is functionally equivalent to a function call: 
+すなわち、イベントを届けられたプロセスは直接よびだされ、
+イベントをポストしたプロセスは受信プロセスによるイベントの処理が終了するまで
+他の処理を行うことはできない。
+%the process to which the event is delivered is directly invoked, 
+%and the process that posted the event is blocked until the receiving process has finished processing the event.
+しかしながら、受信プロセスはイベントが同期的にポストされたか、非同期的にポストされたかを知らされない。
+%The receiving process is, however, not informed whether the event was posted synchronously or asynchronously.
 
-Because synchronous events are delivered immediately,
-posting a synchronous event is functionally equivalent to a function call: 
-the process to which the event is delivered is directly invoked, 
-and the process that posted the event is blocked until the receiving process has finished processing the event.
-The receiving process is, however, not informed whether the event was posted synchronously or asynchronously.
 \begin{figure}[htbp]
  \begin{center}
   \includegraphics[width=40mm]{./images/synchronous_event.eps}
