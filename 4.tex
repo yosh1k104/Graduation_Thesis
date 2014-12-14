@@ -144,36 +144,48 @@ Protothreadsを使用した場合，
 
 
 \subsection{イベント}
-イベントモデルであるContikiでは，イベントが発生するとプロセスが実行される．
-本節ではContikiで扱われる非同期イベントと同期イベントの違いについて説明する．
+イベントモデルであるContikiでは，イベントを受け取るとプロセスが実行される．
+ここではContikiで扱われる非同期イベント、同期イベント、ポーリングの違いについて説明する．
 
 \subsubsection{非同期イベント}
 
-\vspace{0.5em}非同期イベントが発生すると，
+\vspace{0.5em}非同期イベントの概念図を図\ref{fig:asynchronous_event}に示す。
+非同期イベントが発生すると，
 そのイベントはカーネルのイベントキューに挿入され，
-実行時にFirst In First Outで呼び出される．
+後ほどイベントとして受け取られる。
+%実行時にFirst In First Outで呼び出される．
+%非同期イベントはポストされた後、
+非同期イベントはポストされてから受諾されるまでの間、
+Contikiカーネル内のイベントキューに保持される。
+%Asynchronous events are delivered to the receiving process some time after they have been posted.
+%Between their posting and their delivery, 
+%the asynchronous events are held on an event queue inside the Contiki kernel.
+イベントキュー内のイベントはカーネルによってイベント受信プロセスに送られ、
+カーネルはイベントキュー内を確認し、
+イベントを呼び出しているプロセスへとイベントを届ける。
+%カーネルはイベント発生によってイベントをイベントキューまで運び、
+%イベントキューをまとめる。
+%The events on the event queue are delivered to the receiving process by the kernel.
+%The kernel loops through the event queue and 
+%delivers the events to the processes on the queue by invoking the processes.
 
-Asynchronous events are delivered to the receiving process some time after they have been posted.
-Between their posting and their delivery, 
-the asynchronous events are held on an event queue inside the Contiki kernel.
+非同期イベントの受信プロセスはある特定のプロセスである場合と、
+すべての実行中のプロセスである場合がある。
+イベントの受信者がある特定のプロセスだった場合、
+カーネルはイベントを届けるためにこのプロセスを呼び出す。
+イベントの受信者がシステム内のすべてのプロセスだった場合、
+カーネルは同じイベントをすべてのプロセスへと順次届けていく。
+%The receiver of an asynchronous event can either be a specific process, or all running processes.
+%When the receiver is a specific process, the kernel invokes this process to deliver the event.
+%When the receiver of an event is set to be all processes in the system,
+%the kernel sequentially delivers the same event to all processes, 
+%one after another.
 
-The events on the event queue are delivered to the receiving process by the kernel.
-The kernel loops through the event queue and 
-delivers the events to the processes on the queue by invoking the processes.
-
-
-
-The receiver of an asynchronous event can either be a specific process, or all running processes.
-When the receiver is a specific process, the kernel invokes this process to deliver the event.
-When the receiver of an event is set to be all processes in the system,
-the kernel sequentially delivers the same event to all processes, 
-one after another.
-
-非同期イベントはprocess\_post()関数によってポストされる．
-process\_post()関数ははじめにキュー内にイベントのためのメモリ空間があるかどうかを決定するために，
-現在のイベントキューのサイズを確認する．
-もしメモリに空きがなければ，この関数はエラーを返し，
-メモリに空きがあった際には，イベントをキューの最後に挿入する．
+非同期イベントはprocess\_post関数によってポストされる．
+process\_post関数ははじめにキュー内にイベントのためのメモリ空間があるかどうかを確認するために，
+現在のイベントキューのサイズを調べる．
+もしメモリに空きがなければエラーを返し，
+メモリに空きがあった際にはイベントをキューの最後に挿入する．
 
 %Asynchronous events are posted with the process\_post() function. The internals of the process\_post() function is simple.
 %It first checks the size of the current event queue to determine if there is room for the event on the queue.
@@ -190,14 +202,17 @@ process\_post()関数ははじめにキュー内にイベントのためのメ�
 \end{figure}
 
 
+
+
 \subsubsection{同期イベント}
 
-\vspace{0.5em}When a synchronous event is posted,
-the event is immediately delivered to the receiving process.
-
-非同期イベントに対して，
+\vspace{0.5em}非同期イベントに対して，
 同期イベントはポストされたとき，
-同期イベント
+即座にイベントとして受諾される。
+
+
+When a synchronous event is posted,
+the event is immediately delivered to the receiving process.
 
 Unlike asynchronous events, 
 synchronous events are delivered directly when they are posted.
