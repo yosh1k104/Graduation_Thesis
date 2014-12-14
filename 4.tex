@@ -1,5 +1,6 @@
 %\chapter{Contiki - a Lightweight and Flexible Operating System for Tiny Networked Sensors}
-\chapter{無線センサネットワークにおけるProtothreadsを用いたリアルタイムスケジューラ}
+%\chapter{無線センサネットワークにおけるProtothreadsを用いたリアルタイムスケジューラ}
+\chapter{問題提起}
 \begin{large}
 \begin{quote}
 本章では，最初に，本研究が提案するT-Ringという公衆センサデータ管理システムにおける，時間概念の扱いと，それに伴った保存アルゴリズムの概念説明を行う．次に，集中管理とSynapseとのデータ管理の時間的密度と計算コストの比較を行う．詳細な設計については次章で解説する．
@@ -9,16 +10,76 @@
 \clearpage
 
 \section{Protothreads}
-既に述べたように，イベント駆動型は組み込みシステムやセンサネットワークに対して，
+既に述べたように，イベント駆動型は組み込みシステムやセンサネットワークにおいて，
 主流なオペレーティングシステムとなっている．
 しかし，イベント駆動型はメモリのオーバヘッド低く維持できる一方で，
 ユーザが一連の処理を細かい処理に分割しなければならないため，
-プログラムが書き辛いという問題が発生する．
+プログラムが書き辛いという問題が発生する（Listing\ref{lst:non-protothreads}）．
 %TinyOSの例
-Protothreads\cite{Dunkels:2006:PSE:1182807.1182811}はイベント駆動型プログラムをマルチスレッド型のように記述することができるため，
+Protothreads\cite{Dunkels:2006:PSE:1182807.1182811}は
+イベント駆動型プログラムをマルチスレッド型のように
+記述することができるため（Listing\ref{lst:using-protothreads}），
 メモリのオーバヘッドを抑えつつ，
 イベント駆動型の欠点を補うことが可能となる．
 本節では，Protothreadsの機能について詳しく述べる．
+
+
+
+\begin{lstlisting}[caption=Protothredsを使用せずに記述した場合, label={lst:non-protothreads}]
+struct pt {
+    unsigned short lc;
+};
+
+
+char example(struct pt *pt) { 
+    char PT_YIELD_FLAG = 1;
+
+    if(PT_YIELD_FLAG) { ; }
+
+    switch((pt)->lc) {
+        case 0:
+            while(1) { 
+                do {
+                    (pt)->lc = __LINE__;
+
+        case: __LINE__:
+                        if( !(condition) ) { // counter != 1000
+                            return PT_WAITING;
+                        } 
+                } while(0);
+
+                printf("Threshold reached\n");
+                counter = 0;
+            } 
+    }
+    PT_YIELD_FLAG = 0;
+    (pt)->lc = 0;
+
+    return PT_ENDED;
+}
+\end{lstlisting}
+
+
+
+\begin{lstlisting}[caption=Protothredsを使用した場合, label={lst:using-protothreads}]
+#include"pt.h"
+
+
+PT_THREAD(example(structpt*pt)){
+    PT_BEGIN(pt);
+
+    while(1) {
+        PT_WAIT_UNTIL(pt, counter == 1000);
+        printf("Threshold reached\n");
+        counter = 0;
+    }
+    
+    PT_END(pt); 
+}
+\end{lstlisting}
+
+
+
 
 \subsection{メモリ}
 マルチスレッド型のオペレーティングシステムでは，
@@ -66,7 +127,8 @@ Protothreadsを使用した場合，
 戻り値をもとにしたタスクの切り替えを行う際には，
 スケジューラに対してプログラムのファイルの行数をreturnし，
 各タスクがCPU利用権限を再度取得したとき，
-行数を条件分岐し，前回中断した箇所から実行を再開することとなる．
+行数を条件分岐し，前回中断した箇所から実行を
+再開することとなる（Listing\ref{lst:using-protothreads}）．
 
 ただし，現在実行中のタスクよりも優先度の高いタスクが実行待ちになった際に，
 他のマルチスレッドのオペレーティングシステムで実現されているように，
@@ -77,6 +139,9 @@ Protothreadsを使用した場合，
 タイマーと現在時刻を比較し，
 発火時刻を過ぎている場合，タスクを実行待ちのキューへと加える．
 タイマーを実行するタスクは他のタスクと同じ優先度で周期的に実行される．
+
+
+
 
 \subsection{イベント}
 イベントモデルであるContikiでは，イベントが発生するとプロセスが実行される．
