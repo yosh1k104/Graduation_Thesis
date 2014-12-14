@@ -40,7 +40,8 @@ run-to-completion で実行する形態のオペレーティングシステム�
 
 %\subsection{TinyOS: An Operating System for Sensor Networks}
 \subsection{TinyOS}
-この中で代表的なものがTinyOS\cite{Hill:2000:SAD:356989.356998}\cite{Levis04tinyos:an}である．
+イベント駆動型のオペレーティングシステムの中でも、最も代表的なものが
+TinyOS\cite{Hill:2000:SAD:356989.356998}\cite{Levis04tinyos:an}である．
 TinyOSはカリフォルニア大学バークレー校のSmartDust Projectで開発されたオペレーティングシステムである．
 現在無線センサネットワークの標準的なオペレーティングシステムとして扱われており，
 Crossbow社から発売されているMica2やMicaZ\cite{Hill:2002:MWP:623308.624560}，
@@ -59,6 +60,7 @@ TinyOSのアーキテクチャを図\ref{fig:system_conf_of_tinyos}に示す．
 
 TinyOSではnesC\cite{Gay:2003:NLH:781131.781133}と呼ばれるイベント駆動型の新しい言語で
 複数のイベントハンドラを1つのモジュールとして設計可能な機能を提供している．
+%TODO イラストレーターでnesCのコンパイルの様子を描く
 図にnesC言語がコンパイルされて実行されるまでの流れを示す．
 nesC言語はnesCコンパイラによってC言語のコードに変換された後，
 Cコンパイラによって実行形式へと変換される．
