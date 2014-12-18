@@ -104,6 +104,27 @@ Javaで実装することができるため，初心者でも扱いやすいセ�
 敵の侵入に関する情報を的確に把握する研究が盛んに行われている．
 図\ref{fig:surveillance_system}は軍用監視システムにおける概念図である．
 
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=100mm]{./images/surveillance_system.eps}
+ \end{center}
+ %\caption{イベント検知アプリケーション}
+ %\caption{ターゲットトラッキングアプリケーション}
+ \caption{軍用監視アプリケーションにおける概念図}
+ \label{fig:surveillance_system}
+\end{figure}
+
+
+監視アプリケーションにおいて，
+侵入者を検知し，その旨をシステムのゲートウェイノードに警告するタスクにより
+中継されたデータは，
+適時にゲートウェイまで届けられるべきである．
+上記のような時間的制約を伴ったデータの配送が必要なアプリケーションを想定した場合，
+オペレーティングシステムとして
+リアルタイム処理を行うことが可能なものを選択することが多い．
+無線センサネットワークにおけるオペレーティングシステムのリアルタイム性については，
+\ref{sec:threads_model}において詳細に述べる．
+
 監視システムアプリケーションを用いた任務は
 数日から数ヶ月にかけて行われるものが一般的であり，
 任務中の秘密保持の重大性や
@@ -128,15 +149,6 @@ Javaで実装することができるため，初心者でも扱いやすいセ�
 
 
 
-\begin{figure}[htbp]
- \begin{center}
-  \includegraphics[width=100mm]{./images/surveillance_system.eps}
- \end{center}
- %\caption{イベント検知アプリケーション}
- %\caption{ターゲットトラッキングアプリケーション}
- \caption{軍用監視アプリケーションにおける概念図}
- \label{fig:surveillance_system}
-\end{figure}
 
 
 \subsubsection{野生動物の生態調査}
