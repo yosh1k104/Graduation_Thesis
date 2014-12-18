@@ -108,6 +108,67 @@ FireWxNet\cite{conf/mobisys/HartungHSH06}ではこのような温湿度の測定
 \end{figure}
 
 
+
+
+\subsubsection{野生動物の生態調査}
+
+\vspace{0.5em}生命科学における研究者たちは
+現地条件における動植物の観察する際に生じる，
+人間という存在の潜在的影響について懸念を抱いていた．
+近年，無線センサネットワークが既存の動植物の観察手法と異なる
+手法のひとつとして注目されている．
+動物の場合一般的にセンサは繁殖期のはじまりに前もって設置され，
+植物の場合にはセンサの設置は地面が凍る，もしくは休眠状態にあるときに設置されるため，
+動植物に与える影響が少なく，
+繰り返し現地調査を行うことが困難であるような危険な島におけるモニタリングへの
+負担も軽減できることから，
+無線センサネットワークを基盤としたモニタリングは，
+センサネットワークが普及する以前の弊害を無視した手法と比較して，
+目覚ましい業績をあげている．
+%Sensor networks represent a significant advance over traditional invasive methods of monitoring.
+%Sensors can be deployed prior to the onset of the breeding season or other sensitive period (in the case of animals) or while plants are dormant or the ground is frozen (in the case of botanical studies). 
+%Sensors can be deployed on small islets where it would be unsafe or unwise to repeatedly attempt field studies. 
+%The results of wireless sensor-based monitoring efforts can be compared with previous studies that have tradition- ally ignored or discounted disturbance effects.
+
+調査対象の特徴によっては，
+現地調査を複数回行うことが困難となる場合があることは既に述べたが，
+無線センサネットワークに用いられる小型デバイスにおける
+バッテリの駆動時間は，一般的なラップトップなどと比較して
+かなり短いのが現状である．
+バッテリを交換する回数が増えるにつれ，
+無線センサネットワークから得られる利益は減少してしまうことから，
+火災検知システムと同様に，省エネルギーが実現できるような
+システム構成が求められている．
+
+
+カリフォルニア大学バークレー校とインテルの研究員により，
+Mica Moteを基盤とした
+ウミツバメの生態を観測するための
+階層型センサネットワークがグレート・ダック島に展開された
+\cite{Mainwaring:2002:WSN:570738.570751}．
+システム構成図は図\ref{fig:gdi_system_architecture}の通りである．
+動物の掘った穴など，注目すべき32箇所にMica Moteが設置され，
+区画ごとにグループ化されたそれらのMoteは，
+センサデータをゲートウェイまで転送し，
+さらにローカルネットワークを通して，
+ベースステーションまでデータを転送する．
+その後，ベースステーションでデータを記録し，
+定期的に複製されたデータはデータベースへと格納される．
+ユーザはデータベースサーバ内の複製されたデータにアクセスすることや，
+サンプリングレートや電力を操作する変数を調整するなどの，
+インタラクションをするためのデバイスを利用することが可能である．
+
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=120mm]{./images/gdi_system_architecture.eps}
+ \end{center}
+ \caption{GDIのシステム構成図}
+ \label{fig:gdi_system_architecture}
+\end{figure}
+
+
+
+
 \section{ターゲットトラッキング}
 %近年無線センサネットワークにおける，
 %ターゲットトラッキングアプリケーション開発は
@@ -160,7 +221,7 @@ FireWxNet\cite{conf/mobisys/HartungHSH06}ではこのような温湿度の測定
 無線センサネットワーク技術に普及により，
 様々なシナリオにおける無線センサネットワークの利活用が
 現実的になりつつある．
-特に交通量管理や侵入者検知，野生動物の生態調査などの
+特に交通量管理や侵入者検知などの
 ターゲットトラッキングの分野において，
 センサノードは重要な役割を担っており，
 イベントを検知したセンサの周辺ノードはそのイベントを監視し，
@@ -194,7 +255,7 @@ FireWxNet\cite{conf/mobisys/HartungHSH06}ではこのような温湿度の測定
 %ネットワークリソース感のバランスを
 %どのようにして保つかということに焦点が当てられている．
 本節ではターゲットトラッキングの例として，
-軍用監視システムと野生動物の生態調査について言及する．
+軍用監視システムについて言及する．
 
 %In a target tracking application,
 %the sensor nodes which can sense the target at a particular time are kept in active mode 
@@ -281,63 +342,6 @@ Tian Heらの研究\cite{He04energy-efficientsurveillance}では，
 イベントが発生した場合はビーコンの送信を停止するProactive型と，
 イベントが発生した場合にビーコンを送信するReactive型の実装を行い，
 それぞれについて省電力性やステルス性などの評価も行っている．
-
-
-\subsubsection{野生動物の生態調査}
-
-\vspace{0.5em}生命科学における研究者たちは
-現地条件における動植物の観察する際に生じる，
-人間という存在の潜在的影響についてますます懸念を抱いていた．
-近年，無線センサネットワークが既存の動植物の観察手法と異なる
-手法のひとつとして注目されている．
-動物の場合一般的にセンサは繁殖期のはじまりに前もって設置され，
-植物の場合にはセンサの設置は地面が凍る，もしくは休眠状態にあるときに設置されるため，
-動植物に与える影響が少なく，
-繰り返し現地調査を行うことが困難であるような危険な島におけるモニタリングへの
-負担も軽減できることから，
-無線センサネットワークを基盤としたモニタリングは，
-センサネットワークが普及する以前の弊害を無視した手法と比較して，
-目覚ましい業績をあげている．
-%Sensor networks represent a significant advance over traditional invasive methods of monitoring.
-%Sensors can be deployed prior to the onset of the breeding season or other sensitive period (in the case of animals) or while plants are dormant or the ground is frozen (in the case of botanical studies). 
-%Sensors can be deployed on small islets where it would be unsafe or unwise to repeatedly attempt field studies. 
-%The results of wireless sensor-based monitoring efforts can be compared with previous studies that have tradition- ally ignored or discounted disturbance effects.
-
-調査対象の特徴によっては，
-現地調査を複数回行うことが困難となる場合があることは既に述べたが，
-無線センサネットワークに用いられる小型デバイスにおける
-バッテリの駆動時間は，一般的なラップトップなどと比較して
-かなり短いのが現状である．
-バッテリを交換する回数が増えるにつれ，
-無線センサネットワークから得られる利益は減少してしまうことから，
-監視システムと同様に，省エネルギーが実現できるような
-システム構成が求められている．
-
-
-カリフォルニア大学バークレー校とインテルの研究員により，
-Mica Moteを基盤とした
-ウミツバメの生態を観測するための
-階層型センサネットワークがグレート・ダック島に展開された
-\cite{Mainwaring:2002:WSN:570738.570751}．
-システム構成図は図\ref{fig:gdi_system_architecture}の通りである．
-動物の掘った穴など，注目すべき32箇所にMica Moteが設置され，
-区画ごとにグループ化されたそれらのMoteは，
-センサデータをゲートウェイまで転送し，
-さらにローカルネットワークを通して，
-ベースステーションまでデータを転送する．
-その後，ベースステーションでデータを記録し，
-定期的に複製されたデータはデータベースへと格納される．
-ユーザはデータベースサーバ内の複製されたデータにアクセスすることや，
-サンプリングレートや電力を操作する変数を調整するなどの，
-インタラクションをするためのデバイスを利用することが可能である．
-
-\begin{figure}[htbp]
- \begin{center}
-  \includegraphics[width=120mm]{./images/gdi_system_architecture.eps}
- \end{center}
- \caption{GDIのシステム構成図}
- \label{fig:gdi_system_architecture}
-\end{figure}
 
 
 %今日，充電不可能なバッテリを用いた数ヶ月間稼働するセンサネットワークに対する
