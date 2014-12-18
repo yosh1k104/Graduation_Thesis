@@ -86,11 +86,26 @@ Javaで実装することができるため，初心者でも扱いやすいセ�
 
 
 \section{ターゲットトラッキング}
+もし無線センサネットワークが適切に利用された場合，
+軍用のアプリケーションにおける情報収集にて，
+人間の力を必要とする機会が減少していき，
+近い将来には，
+センサデバイスが低価格で大量生産され，
+実社会に高密度に備え付けられることが予測される．
 
 \subsubsection{軍用監視システム}
 
-\vspace{0.5em}監視システムアプリケーションを用いた任務は
-数日から数ヶ月にかけて行われるものが一般的である．
+\vspace{0.5em}監視任務において，
+ターゲットとする敵の能力や位置に関する情報を
+正確に入手することが何よりも重要であるが，
+そのような任務には隊員の危険を伴うものが多い．
+無線センサネットワークを利用することで，
+リスクを最小限に抑えつつ，
+敵の侵入に関する情報を的確に把握する研究が盛んに行われている．
+図\ref{fig:surveillance_system}は軍用監視システムにおける概念図である．
+
+監視システムアプリケーションを用いた任務は
+数日から数ヶ月にかけて行われるものが一般的であり，
 任務中の秘密保持の重大性や
 任務が敵の管轄地域行われる場合もあることから，
 %近づきにくさ
@@ -111,20 +126,16 @@ Javaで実装することができるため，初心者でも扱いやすいセ�
 重要なイベントが発生したときを除いて，
 通信を控えることが求められている．
 
-%Ii is crucial for military surveillance systems to have a very low possibility of being detected and intercepted. 
-%Miniaturization makes sensor devices hard to detect physically; 
-%however,
-%RF signals can be easily intercepted if sensor devices actively communicate during the surveillance stage. 
-%A zero communication exposure is desired in the absence of significant events.
 
 
 \begin{figure}[htbp]
  \begin{center}
-  \includegraphics[width=100mm]{./images/event_detection.eps}
+  \includegraphics[width=100mm]{./images/surveillance_system.eps}
  \end{center}
  %\caption{イベント検知アプリケーション}
- \caption{ターゲットトラッキングアプリケーション}
- \label{fig:event_detection}
+ %\caption{ターゲットトラッキングアプリケーション}
+ \caption{軍用監視アプリケーションにおける概念図}
+ \label{fig:surveillance_system}
 \end{figure}
 
 
