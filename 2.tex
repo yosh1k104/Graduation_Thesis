@@ -87,7 +87,7 @@ Javaで実装することができるため，初心者でも扱いやすいセ�
 
 \section{ターゲットトラッキング}
 
-\subsubsection{監視システム}
+\subsubsection{軍用監視システム}
 
 \vspace{0.5em}監視システムアプリケーションを用いた任務は
 数日から数ヶ月にかけて行われるものが一般的である．
@@ -99,6 +99,23 @@ Javaで実装することができるため，初心者でも扱いやすいセ�
 監視システムにおけるアプリケーションでは
 センサデバイスの寿命を向上させるような
 省エネルギーな構成が必要とされる．
+
+また軍用の監視システムにおいて，
+デイバイスが発見され，
+それに伴い迎撃されることを
+未然に防ぐことは極めて重要である．
+センサデバイスを小型化することにより，
+デバイスの発見を物理的に困難にすることができるが，
+もしセンサデバイスが監視をする際に活発に通信をする場合，
+無線周波数が傍受されてしまう可能性が高い．
+重要なイベントが発生したときを除いて，
+通信を控えることが求められている．
+
+%Ii is crucial for military surveillance systems to have a very low possibility of being detected and intercepted. 
+%Miniaturization makes sensor devices hard to detect physically; 
+%however,
+%RF signals can be easily intercepted if sensor devices actively communicate during the surveillance stage. 
+%A zero communication exposure is desired in the absence of significant events.
 
 
 \begin{figure}[htbp]
