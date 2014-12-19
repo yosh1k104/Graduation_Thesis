@@ -58,37 +58,108 @@ Javaで実装することができるため，初心者でも扱いやすいセ�
 
 
 \section{環境モニタリング}
+環境モニタリングは無線センサネットワークが適用される
+
+
+Environment monitoring is a natural candidate for applying wireless sensor networks, since the physical variables that must to be monitored, e.g., temperature. They are usually distributed over large regions.
+
+
 
 \subsubsection{森林火災検知}
 
-\vspace{0.5em}センサノードが戦略的に，ランダムに，密集して森林に配置されれば，
-火災が制御できなくなるほど広がる前に，
-センサノードが正確な火の根源をユーザに知らせることが可能になる．
-%Since sensor nodes may be strategically,randomly,and densely deployed in a forest,
-%sensor nodes can relay the exact origin of the fire to the end users 
-%before the fire is spread uncontrollable. 
-数百万から構成されるセンサノードが
-無線周波数を利用し，統合され，配置されることも可能である．
-%Millions of sensor nodes can be deployed and integrated using radio frequencies/ optical systems. 
-また，太陽電池などのような，利用可能なエネルギーを探索し，
-効率的に活用する手法が備えられるかもしれない．
-%Also,they may be equipped with effective power scavenging methods [12],
-%such as solar cells,
-%because the sensors may be left unattended for months and even years. 
-センサノードは，分散しセンシングをするまたは木や岩のような障害に打ち勝つために，
-それぞれが協調するだろう．
-%The sensor nodes will collaborate with each other to perform distributed 
-%sensing and overcome obstacles,
-%such as trees and rocks,
-%that block wired sensors’ line of sight.
+\vspace{0.5em}森林火災は原生林において生じる制御不可能な火災であり，
+自然資源と人的資源に多大な被害を与える．
+具体的に，木々を根絶やし，基盤となる施設を燃やし，
+さらには都市部付近における死亡者数を増加させてしまう場合も少なくない．
+森林火災の共通の原因として，落雷や人間の不注意，
+そして燃料の野ざらしによる極度の乾燥などが挙げられる．
+場合によっては火災は森林の生態系の一部としてみなされることもあるが，
+ほとんどの場合において，
+火災により発生する公衆安全や自然資源に対するダメージは耐え難いものであり，
+被害を最小限に抑えるためにも火災の早期発見と鎮圧が極めて重要である．
+%森林火災検知システムにおいて，
+%災害の規模を最小化するために即座に対応することが最も重要であることは既に述べたが，
+しかしながら低解像度かつ長期走査により，
+%現在の
+中規模もしくは大規模火災監視システムは適時検知を行うことは困難であり，
+高精度のリアルタイム火災検知を提供できる拡張性のある手法が求められていた．
+
+近年無線センサネットワークにおける発展が著しく，
+森林火災を検知する際に役立つ，温度，相対湿度，さらに煙などの
+様々な現象をセンシングすることが可能であることから，
+無線センサネットワークがこれらの問題を解決できる手法として関心を集めている．
+%リアルタイム森林検知システム構築するための将来有望なフレームワークを構築．
+%近い将来，
+%森林火災検知のための
+%様々なセンシングモジュールが明確にデザインされ，
+%最適化される．
+%加えて，
+火災が発生している間，定期的な監視を実現するために，
+センサノードは数週間にわたってオペレーションをすることが可能であり，
+%航空機を利用することで，
+森林火災によって生じる被害と比較しても，
+低コストで大規模センサネットワークは容易に展開することができる．
 
 
-山火事の消火においては，類焼を予測するために
+%To summarize,
+%the most critical issue in a forest fire detection system is immediate response in order to minimize the scale of the disaster. 
+%This requires constant surveillance of the forest area. 
+%Current medium and large-scale fire surveillance systems do not accomplish timely detection due to low resolution and long period of scan. 
+%Therefore, there is a need for a scalable solution that can provide real time fire detection with high accuracy. 
+%We believe that wireless sensor networks (WSNs) can potentially provide such solution. 
+%Recent advances in WSNs support our belief that they make a promising framework for building near real-time forest fire detection systems. 
+%Current sensing modules can sense a variety of phenomena 
+%including temperature, relative humidity,
+%and smoke [18] which are all helpful for fire detection systems. 
+%In the future, several sensing modules will be explicitly designed 
+%and optimized for forest fire detection systems. 
+%In addition, sensor nodes can operate for weeks on a pair of AA batteries to provide constant monitoring during the fire season. 
+%Moreover, recent protocols make sensor nodes capable of 
+%organizing themselves into a self-configuring network, thus removing the overhead of manual setup. 
+%Large-scale wireless sensor networks can be easily deployed using aeroplanes at a low cost compared to the damages and loss of properties caused by forest fires.
+
+
+%Forest fires, also known as wild fires, are uncontrolled fires occurring 
+%in wild areas and cause significant damage to natural and human resources. 
+%Forest fires eradicate forests, burn the infrastructure,
+%and may result in high human death toll near urban areas. 
+%Common causes of forest fires include lightning, human carelessness,
+%and exposure of fuel to extreme heat and aridity. 
+%It is known that in some cases fires are part of the forest ecosystem 
+%and they are important to the life cycle of indigenous habitats. 
+%However, in most cases,
+%the damage caused by fires to public safety 
+%and natural resources is intolerable and early detection and suppression of fires deem crucial. 
+
+
+%センサノードが戦略的に，ランダムに，密集して森林に配置されれば，
+%火災が制御できなくなるほど広がる前に，
+%センサノードが正確な火の根源をユーザに知らせることが可能になる．
+%%Since sensor nodes may be strategically,randomly,and densely deployed in a forest,
+%%sensor nodes can relay the exact origin of the fire to the end users 
+%%before the fire is spread uncontrollable. 
+%数百万から構成されるセンサノードが
+%無線周波数を利用し，統合され，配置されることも可能である．
+%%Millions of sensor nodes can be deployed and integrated using radio frequencies/ optical systems. 
+%また，太陽電池などのような，利用可能なエネルギーを探索し，
+%効率的に活用する手法が備えられるかもしれない．
+%%Also,they may be equipped with effective power scavenging methods [12],
+%%such as solar cells,
+%%because the sensors may be left unattended for months and even years. 
+%センサノードは，分散しセンシングをするまたは木や岩のような障害に打ち勝つために，
+%それぞれが協調するだろう．
+%%The sensor nodes will collaborate with each other to perform distributed 
+%%sensing and overcome obstacles,
+%%such as trees and rocks,
+%%that block wired sensors’ line of sight.
+
+
+森林火災の消火においては，類焼を予測するために
 温湿度の変化を観測することが重要である．
 これまでは消防士が測定器を持って位置時間ごとに測定を行っていたが，
 この手法では消防司令所への報告に数分を要することに加え，
 類焼する可能性のある危険な場所に消防士を向かわせなければならない．
-山火事を消火する消防士を支援するシステムである，
+森林火災を消火する消防士を支援するシステムである，
 FireWxNet\cite{conf/mobisys/HartungHSH06}ではこのような温湿度の測定を，
 無線センサネットワークとそのネットワーク間を
 接続する長距離無線リンクで構成されるシステムを
