@@ -17,7 +17,7 @@ Iris Moteは図\ref{fig:iris_mote}のようなものであり，
 アメリカのCrossbow Technology社が開発したセンサネットワーク用の無線端末である．
 それに対して，MicaZはカリフォルニア大学バークレー校における
 スマートダストプロジェクト\cite{Kahn:1999:NCC:313451.313558}によって開発された．
-ハードウェア，OS，開発言語，シミュレータ，
+ハードウェア，オペレーティングシステム，開発言語，シミュレータ，
 ライブラリといったアプリケーション開発環境を提供しており，
 アプリケーション開発が容易であるため，
 現在センサネットワークの研究で多く使用されている．
@@ -101,61 +101,23 @@ Environment monitoring is a natural candidate for applying wireless sensor netwo
 低コストで大規模センサネットワークは容易に展開することができる．
 
 
-%To summarize,
-%the most critical issue in a forest fire detection system is immediate response in order to minimize the scale of the disaster. 
-%This requires constant surveillance of the forest area. 
-%Current medium and large-scale fire surveillance systems do not accomplish timely detection due to low resolution and long period of scan. 
-%Therefore, there is a need for a scalable solution that can provide real time fire detection with high accuracy. 
-%We believe that wireless sensor networks (WSNs) can potentially provide such solution. 
-%Recent advances in WSNs support our belief that they make a promising framework for building near real-time forest fire detection systems. 
-%Current sensing modules can sense a variety of phenomena 
-%including temperature, relative humidity,
-%and smoke [18] which are all helpful for fire detection systems. 
-%In the future, several sensing modules will be explicitly designed 
-%and optimized for forest fire detection systems. 
-%In addition, sensor nodes can operate for weeks on a pair of AA batteries to provide constant monitoring during the fire season. 
-%Moreover, recent protocols make sensor nodes capable of 
-%organizing themselves into a self-configuring network, thus removing the overhead of manual setup. 
-%Large-scale wireless sensor networks can be easily deployed using aeroplanes at a low cost compared to the damages and loss of properties caused by forest fires.
+森林火災検知システムにおけるネットワークライフタイムは，
+約6ヶ月から成る火災シーズンを少なくとも上回ることが望ましいが，
+一般的にそれぞれのノードが数週間に渡って稼働することは難しいのが現状である．
+したがってこの要件を満たすためにも，
+エネルギーの消費を抑えるようなシステムを提案する必要がある．
 
 
-%Forest fires, also known as wild fires, are uncontrolled fires occurring 
-%in wild areas and cause significant damage to natural and human resources. 
-%Forest fires eradicate forests, burn the infrastructure,
-%and may result in high human death toll near urban areas. 
-%Common causes of forest fires include lightning, human carelessness,
-%and exposure of fuel to extreme heat and aridity. 
-%It is known that in some cases fires are part of the forest ecosystem 
-%and they are important to the life cycle of indigenous habitats. 
-%However, in most cases,
-%the damage caused by fires to public safety 
-%and natural resources is intolerable and early detection and suppression of fires deem crucial. 
+%We calculate the number of nodes that are initially de- ployed based on the required network lifetime and the re- quested coverage degree as follows. 
+%The desired network lifetime for a forest fire detection system should be at least one fire season,  which is up to six months. 
+%Typically, in- dividual nodes cannot last longer than a few weeks. 
+%How- ever, since sensors consume energy at a higher rate in active mode compared to sleep mode, 
+%a sensor network can last for several months if most nodes are put to sleep. 
 
-
-%センサノードが戦略的に，ランダムに，密集して森林に配置されれば，
-%火災が制御できなくなるほど広がる前に，
-%センサノードが正確な火の根源をユーザに知らせることが可能になる．
-%%Since sensor nodes may be strategically,randomly,and densely deployed in a forest,
-%%sensor nodes can relay the exact origin of the fire to the end users 
-%%before the fire is spread uncontrollable. 
-%数百万から構成されるセンサノードが
-%無線周波数を利用し，統合され，配置されることも可能である．
-%%Millions of sensor nodes can be deployed and integrated using radio frequencies/ optical systems. 
-%また，太陽電池などのような，利用可能なエネルギーを探索し，
-%効率的に活用する手法が備えられるかもしれない．
-%%Also,they may be equipped with effective power scavenging methods [12],
-%%such as solar cells,
-%%because the sensors may be left unattended for months and even years. 
-%センサノードは，分散しセンシングをするまたは木や岩のような障害に打ち勝つために，
-%それぞれが協調するだろう．
-%%The sensor nodes will collaborate with each other to perform distributed 
-%%sensing and overcome obstacles,
-%%such as trees and rocks,
-%%that block wired sensors’ line of sight.
 
 
 森林火災の消火においては，類焼を予測するために
-温湿度の変化を観測することが重要である．
+温湿度の変化を観測することが重要であり，
 これまでは消防士が測定器を持って位置時間ごとに測定を行っていたが，
 この手法では消防司令所への報告に数分を要することに加え，
 類焼する可能性のある危険な場所に消防士を向かわせなければならない．
