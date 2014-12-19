@@ -108,15 +108,27 @@ Environment monitoring is a natural candidate for applying wireless sensor netwo
 エネルギーの消費を抑えるようなシステムを提案する必要がある．
 
 
-%We calculate the number of nodes that are initially de- ployed based on the required network lifetime and the re- quested coverage degree as follows. 
-%The desired network lifetime for a forest fire detection system should be at least one fire season,  which is up to six months. 
-%Typically, in- dividual nodes cannot last longer than a few weeks. 
-%How- ever, since sensors consume energy at a higher rate in active mode compared to sleep mode, 
-%a sensor network can last for several months if most nodes are put to sleep. 
+森林火災モニタリングに対する無線センサネットワークの可能性について考察したDoolinらは，
+サンフランシスコとカリフォルニアにおける制御下の火災から実験的な結果を導きだした
+\cite{doi:10.1117/12.605655}．
+システムはGPSを搭載した数個のMica Moteから成り，
+収集された温度，湿度，そして気圧データはベースステーションへと転送され，
+データベースへと格納後，異なるアプリケーションによって提供される
+（図\ref{fig:system_conf_of_WS_for_wildfire_monitoring}）．
+実験から，火災発生地域多数のセンサを設置することで，
+火災が発生するより前に火災発生の前触れを予測することができると述べている．
+
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=100mm]{./images/system_conf_of_WS_for_wildfire_monitoring.eps}
+ \end{center}
+ \caption{無線センサを用いた森林火災モニタリングシステム構成図}
+ \label{fig:system_conf_of_WS_for_wildfire_monitoring}
+\end{figure}
 
 
 
-森林火災の消火においては，類焼を予測するために
+また，森林火災の消火においては類焼を予測するために
 温湿度の変化を観測することが重要であり，
 これまでは消防士が測定器を持って位置時間ごとに測定を行っていたが，
 この手法では消防司令所への報告に数分を要することに加え，
