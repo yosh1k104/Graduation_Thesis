@@ -11,9 +11,18 @@
 \clearpage
 
 \section{はじめに}
-近年技術の発展によりセンサノードの低価格化，高性能化が進み，
-それに伴い，ネットワークに繋がる物理センサが自動的に多様なデータをやり取りし，
-それらを様々な形で活用する無線センサネットワークが普及してきている．
+近年，小型センサの発展を促すセンサ微小電気機械システム技術の進歩により，
+無線センサネットワークが急速に普及してきている．
+無線センサネットワークで使用されるノードは非常に小さく，
+処理機能や計算リソースが制限されているものの，
+%数年前と比べて安価な値段で購入できるようになった．
+%これらのセンサノードはセンシング，
+センシング，計測，情報収集し，
+そしてユーザに対してセンシングしたデータを転送する機能でさえも
+備えている．
+%近年技術の発展によりセンサノードの低価格化，高性能化が進み，
+%それに伴い，ネットワークに繋がる物理センサが自動的に多様なデータをやり取りし，
+%それらを様々な形で活用する無線センサネットワークが普及してきている．
 代表的なセンサノードとして，Iris MoteやMicaZ\cite{Hill:2002:MWP:623308.624560}，
 SunSPOTなどがある．
 
@@ -51,17 +60,34 @@ Javaで実装することができるため，初心者でも扱いやすいセ�
 
 \begin{figure}[htbp]
  \begin{center}
-  \includegraphics[width=25mm]{./images/sunspot.eps}
+  \includegraphics[width=20mm]{./images/sunspot.eps}
  \end{center}
  \caption{SunSPOT}
  \label{fig:sunspot}
 \end{figure}
 
 
+無線センサネットワークアプリケーションを分類した場合，
+図\ref{fig:overview_of_sensor_applications}のように
+環境モニタリングとターゲットトラッキングの大別される
+\cite{Yick:2008:WSN:1389582.1389832}．
+環境モニタリングとターゲットトラッキングについてはそれぞれ，
+\ref{sec:environmental_monitoring}と
+\ref{sec:target_tracking}にて詳細に解説する．
+
+
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=150mm]{./images/overview_of_sensor_applications.eps}
+ \end{center}
+ \caption{センサアプリケーションの概要}
+ \label{fig:overview_of_sensor_applications}
+\end{figure}
 
 
 
-\section{環境モニタリング}
+
+\section{環境モニタリング}\label{sec:environmental_monitoring}
 環境モニタリングの歴史は長く，
 かつては手動によりデータの収集を行っていたが，
 デジタルデータロガーの普及により，
@@ -93,15 +119,15 @@ Javaで実装することができるため，初心者でも扱いやすいセ�
 
 
 
-\subsubsection{森林火災検知}
-
-\vspace{0.5em}森林火災は原生林において生じる制御不可能な火災であり，
+\subsection{森林火災検知}
+%\vspace{0.5em}
+森林火災は原生林において生じる制御不可能な火災であり，
 自然資源と人的資源に多大な被害を与える．
 具体的に，木々を根絶やし，基盤となる施設を燃やし，
 さらには都市部付近における死亡者数を増加させてしまう場合も少なくない．
 森林火災の共通の原因として，落雷や人間の不注意，
 そして燃料の野ざらしによる極度の乾燥などが挙げられる．
-場合によっては火災は森林の生態系の一部としてみなされることもあるが，
+火災は森林の生態系の一部としてみなされることもあるが，
 ほとんどの場合において，
 火災により発生する公衆安全や自然資源に対するダメージは耐え難いものであり，
 被害を最小限に抑えるためにも火災の早期発見と鎮圧が極めて重要である．
@@ -183,12 +209,12 @@ FireWxNet\cite{conf/mobisys/HartungHSH06}ではこのような温湿度の測定
 
 
 
-\subsubsection{野生動物の生態調査}
-
-\vspace{0.5em}生命科学における研究者たちは
-現地条件における動植物の観察する際に生じる，
+\subsection{野生動物の生態調査}
+%\vspace{0.5em}
+生命科学における研究者たちは
+動植物の観察する際に生じる，
 人間という存在の潜在的影響について懸念を抱いていた．
-近年，無線センサネットワークが既存の動植物の観察手法と異なる
+近年，無線センサネットワークが既存の動植物の観察手法に代わる
 手法のひとつとして注目されている．
 動物の場合一般的にセンサは繁殖期のはじまりに前もって設置され，
 植物の場合にはセンサの設置は地面が凍る，もしくは休眠状態にあるときに設置されるため，
@@ -198,10 +224,6 @@ FireWxNet\cite{conf/mobisys/HartungHSH06}ではこのような温湿度の測定
 無線センサネットワークを基盤としたモニタリングは，
 センサネットワークが普及する以前の弊害を無視した手法と比較して，
 目覚ましい業績をあげている．
-%Sensor networks represent a significant advance over traditional invasive methods of monitoring.
-%Sensors can be deployed prior to the onset of the breeding season or other sensitive period (in the case of animals) or while plants are dormant or the ground is frozen (in the case of botanical studies). 
-%Sensors can be deployed on small islets where it would be unsafe or unwise to repeatedly attempt field studies. 
-%The results of wireless sensor-based monitoring efforts can be compared with previous studies that have tradition- ally ignored or discounted disturbance effects.
 
 調査対象の特徴によっては，
 現地調査を複数回行うことが困難となる場合があることは既に述べたが，
@@ -242,53 +264,7 @@ Mica Moteを基盤とした
 
 
 
-\section{ターゲットトラッキング}
-%近年無線センサネットワークにおける，
-%ターゲットトラッキングアプリケーション開発は
-%ますます重要な位置づけになりつつある．
-%Target Tracking as it moves through a sensor network has become an 
-%increasingly important application in Wireless Sensor Networks. 
-
-%物理環境において，
-%特定のイベントの観測のための資源の限られた幾千ものセンサノードから成る，
-%無線センサネットワーク技術に普及により，
-%様々なシナリオにおける無線センサネットワークの利活用が
-%現実的になりつつある．
-%イベントを検知したセンサの周辺ノードはそのイベントを監視し，
-%ラップトップやベースステーションのような外界と通信する機能を持った
-%シンクノードに対してイベントの発生を知らせる．
-%%The continuous evolution in wireless sensor network technology 
-%%make it possible to implement the wireless sensor network (WSNs) in a variety of scenarios. 
-%%WSNs consist of thousands of tiny sensor nodes deployed 
-%%in a physical environment for observation of an event of interest. 
-%%The sensors in the vicinity of an event must be able to monitor it and report back to the sink. 
-%%A sink sensor node has capability to communicate with outside world such as laptop,base station. 
-%
-%
-%近年，交通量管理や侵入者検知，野生動物の生態調査などの分野において，
-%%センサノードは重要な役割を担っている．
-%センサノードは重要な役割を担っている．
-%無線センサネットワークにおける既存のターゲットトラッキングでは
-%集約的な手法が用いられている．
-%ネットワーク内におけるセンサの数が増加につれて，
-%シンクノードに対するメッセージも増加し，
-%それに伴い新たな帯域を消費してしまう．
-
-%Sensor nodes have been deployed to play significant roles in traffic control,battlefield,
-%habitat monitoring and intruder tracking in recent years. 
-%The traditional target tracking methods for Wireless Sensor Networks 
-%make use of a centralized approach. 
-%As the number of sensors rise in the network,
-%more messages are passed on towards the sink and will consume additional bandwidth. 
-%Thus this approach is not fault tolerant 
-%as there is single point of failure and lacks scalability. 
-%Moreover in traditional target tracking methods,
-%sensing task is usually performed by one node at a time resulting 
-%in less accuracy and heavy computation burden on that node. 
-%In WSNs each node has very limited power; 
-%consequently traditional tracking methods 
-%based on complex signal processing algorithms are not useful.
-
+\section{ターゲットトラッキング}\label{sec:target_tracking}
 %物理環境において，
 特定のイベントの観測のための資源の限られた幾千ものセンサノードから成る，
 無線センサネットワーク技術に普及により，
@@ -307,52 +283,13 @@ Mica Moteを基盤とした
 適時にゲートウェイまで届けられるべきである．
 したがって，環境モニタリングと同様に
 ターゲットトラッキングでもリアルタイムオペレーティングシステムを採用すべきである．
-%このような時間的制約を伴ったデータの配送が必要なアプリケーションを想定した場合，
-%オペレーティングシステムとして
-%リアルタイム処理を行うことが可能なものを選択することが多い．
-%無線センサネットワークにおけるオペレーティングシステムのリアルタイム性については，
-%\ref{sec:threads_model}において詳細に述べる．
-%ターゲットトラッキングアプリケーションにおいて，
-%ある特定の時間にターゲットをセンシングしているセンサノードは
-%アクティブモードを維持し，
-%エネルギーを浪費しないように，
-%残りのノードはターゲットが対象ノードに接近するまでの期間
-%待機モードを継続する．
-%この際，継続して移動するターゲットを監視するために，
-%いくつかのセンサ郡は
-%ターゲットが到着する少し前から
-%アクティブモードにへと移行しなければならない．
-%このアクティブなセンサ郡は
-%移動するターゲットの速度に依存して変化し，
-%クラスタのヘッドによってスケジューリングされる．
-%ターゲットトラッキングを行う際には，
-%エネルギーや帯域，オーバヘッドのような
-%ネットワークリソース感のバランスを
-%どのようにして保つかということに焦点が当てられている．
 本節ではターゲットトラッキングの例として，
 軍用監視システムについて言及する．
 
-%In a target tracking application,
-%the sensor nodes which can sense the target at a particular time are kept in active mode 
-%while the remaining nodes are to be retained in inactive mode 
-%so as to conserve energy until the target approaches them. 
-%To continuously monitor mobile target,
-%a group of sensors must be turned in active mode just before target reaches to them. 
-%This group of active sensors varies depending on the velocity of moving target and schedule from cluster head. 
-%Ultimately, target tracking in course of maintaining the balance 
-%between network resources like energy, bandwidth, and overheads is challenging.
 
-
-%もし無線センサネットワークが適切に利用された場合，
-%軍用のアプリケーションにおける情報収集にて，
-%人間の力を必要とする機会が減少していき，
-%近い将来には，
-%センサデバイスが低価格で大量生産され，
-%実社会に高密度に備え付けられることが予測される．
-
-\subsubsection{軍用監視システム}
-
-\vspace{0.5em}監視任務において，
+\subsection{軍用監視システム}
+%\vspace{0.5em}
+監視任務において，
 ターゲットとする敵の能力や位置に関する情報を
 正確に入手することが何よりも重要であるが，
 そのような任務には隊員の危険を伴うものが多い．
@@ -371,16 +308,6 @@ Mica Moteを基盤とした
  \label{fig:surveillance_system}
 \end{figure}
 
-
-%監視アプリケーションにおいて，
-%侵入者を検知し，その旨をシステムのゲートウェイノードに警告するタスクにより
-%中継されたデータは，
-%適時にゲートウェイまで届けられるべきである．
-%上記のような時間的制約を伴ったデータの配送が必要なアプリケーションを想定した場合，
-%オペレーティングシステムとして
-%リアルタイム処理を行うことが可能なものを選択することが多い．
-%無線センサネットワークにおけるオペレーティングシステムのリアルタイム性については，
-%\ref{sec:threads_model}において詳細に述べる．
 
 監視システムアプリケーションを用いた任務は
 数日から数ヶ月にかけて行われるものが一般的であり，
@@ -424,22 +351,14 @@ Tian Heらの研究\cite{He04energy-efficientsurveillance}では，
 
 
 
-
-%Sensor networks that run for 9 months from non-rechargeable power sources would have significant audiences today. 
-%Although ecological studies at GDI span multiple field seasons,
-%individual field seasons typically vary from 9 to 12 months. 
-%Seasonal changes as well as the plants and animals of interest determine their durations.
-
-
-
-
 %\section{イベント検知アプリケーション}
 
 \section{まとめ}
-本章では，最初にハードウェアに関する技術の発展から，
-センサの小型化，高性能化が進み，
-それに伴い無線センサネットワークが普及してきたことを説明した．
-次いで，無線センサネットワークが適用されてきた一例として，
-環境モニタリングとターゲットトラッキングを紹介し，
-それぞれについてエネルギー節約とリアルタイム処理の重要性について言及した．
+本章では，まず，技術の発展によりセンサノードの低価格化，高性能化が進み，
+それに伴い，ネットワークに繋がる物理センサが自動的に多様なデータをやり取りし，
+それらを様々な形で活用する無線センサネットワークが普及してきたことを説明した．
+次いで，無線センサネットワークアプリケーションを
+環境モニタリングとターゲットトラッキングに分類し，
+それぞれについて例を紹介しながら
+エネルギー節約とリアルタイム処理の重要性について言及した．
 
