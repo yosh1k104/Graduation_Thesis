@@ -1,5 +1,5 @@
 %\documentclassreport]{jsbook}
-\documentclass[report, 10.5pt]{jsbook}
+\documentclass[report, 11pt]{jsbook}
 \usepackage[dvipdfmx]{graphicx}
 \usepackage{okumacro}
 \usepackage{ascmac}
@@ -30,6 +30,21 @@
 
 \setcounter{tocdepth}{2}
 
+%\setcounter{secnumdepth}{5}
+%\makeatletter
+%\newcommand{\subsubsubsection}{\@startsection{paragraph}{4}{\z@}%
+%    {1.5\baselineskip \@plus.5\dp0 \@minus.2\dp0}%
+%    {.5\baselineskip \@plus2.3\dp0}%
+%    {\reset@font\normalsize\bfseries}
+%}
+%\newcommand{\subsubsubsubsection}{\@startsection{subparagraph}{5}{\z@}%
+%    {1.5\baselineskip \@plus.5\dp0 \@minus.2\dp0}%
+%    {.5\baselineskip \@plus2.3\dp0}%
+%    {\reset@font\normalsize\itshape}
+%}
+%\makeatother
+%\setcounter{tocdepth}{5}
+
 \begin{document}
 
 \input{title.tex}
@@ -48,6 +63,7 @@
 \input{5.tex}
 \input{6.tex}
 \input{7.tex}
+
 \input{thanks.tex}
 \input{bib.tex}
 
