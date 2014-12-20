@@ -1,7 +1,12 @@
 \chapter{無線センサネットワークにおけるオペレーティングシステム}
 \begin{large}
 \begin{quote}
-本章では，最初にセンサネットワークの一般公衆化を説明し，公衆センサデータ管理における必須な機能要件である地理的探索について述べる．次に，公衆センサデータ管理のシステム設計の際の重要な概念であるデータ管理の時間的密度を解説し，最後にセンサデータの時間的特殊性とそれに起因する公衆センサデータ管理の問題点を述べる．
+本章では，まず，
+無線センサネットワークにおけるオペレーティングシステムの分類を行い，
+それぞれについて具体的なオペレーティングシステムを例に挙げながら，
+その特徴についての考察を行う．
+最後に，それぞれのモデルを比較し，
+それぞれのモデルを採用するメリットとデメリットについて示す．
 %本章では，
 \end{quote}
 \end{large}
@@ -29,6 +34,11 @@ run-to-completion で実行する形態のオペレーティングシステム�
 また，各タスクが不可分に実行されるので共有資源に対する排他制御が不要となり，
 安全性が高い．
 さらに，CPU の特殊な機能を用いなくても実装できるので移植性も高い．
+本節では，TinyOSとContikiをイベントモデルの例として提示し，
+それぞれの特徴について言及する．
+
+
+
 \begin{figure}[htbp]
  \begin{center}
   \includegraphics[width=60mm]{./images/event_model.eps}
@@ -124,9 +134,10 @@ nesCはイベント駆動型に特化した最適化を行っているため省�
 Contiki\cite{Dunkels:2004:CLF:1032658.1034117}はC言語で記述された
 最も正統派のイベント駆動型オペレーティングシステムである．
 Contikiでは動的モジュールを実現するために
-ELF（Executable and Linkable Format）形式のファイルを
+Executable and Linkable Format（ELF）形式のファイルを
 ロード可能な仕組みを提供している\cite{Dunkels06run-timedynamic}．
-Contikiのアーキテクチャを図\ref{fig:system_conf_of_contiki}に示す．
+Contikiのアーキテクチャを図\ref{fig:system_conf_of_contiki}に示す
+\cite{Dwivedi_operatingsystems}．
 
 
 %Contiki [18], is a lightweight open source OS written in C for WSN sensor nodes. Contiki is a 
@@ -150,7 +161,7 @@ PT\_WAIT\_UNTILで条件付きブロックを行うことで，
  \begin{center}
   \includegraphics[width=80mm]{./images/system_conf_of_contiki.eps}
  \end{center}
- \caption{Contiki アーキテクチャ（参考：Operating Systems for Tiny Networked Sensors\cite{Dwivedi_operatingsystems}）}
+ \caption{Contiki アーキテクチャ}
  \label{fig:system_conf_of_contiki}
 \end{figure}
 
@@ -169,6 +180,9 @@ PT\_WAIT\_UNTILで条件付きブロックを行うことで，
 また，プリエンプションを行うことも想定しているため，
 %ジョブの実行を設定された時間通りに作動させる，
 ハードリアルタイム処理をサポートすることができる．
+本節では，スレッドモデルの例として，
+MANTIS OSとNano-RKを紹介し，
+その特徴について考察する．
 
 %\section{リアルタイムスケジューリング}
 ジョブの実行を設定された時間通りに作動させるリアルタイム処理は主に
@@ -209,48 +223,6 @@ PT\_WAIT\_UNTILで条件付きブロックを行うことで，
 
 
 
-%\subsection{Nano-RK: an Energy-aware Resource-centric RTOS for Sensor Networks}
-\subsection{Nano-RK}
-Nano-RK\cite{Eswaran:2005:NER:1106608.1106672}は，
-無線センサネットワークにおけるマルチタスク処理機能を備えた
-リアルタイムオペレーティングシステムであり，
-%Nano-RK [31] is a fixed, preemptive multitasking real-time OS for WSNs. 
-%Nano-RKを設計することで，
-リソースの使用が制限された無線センサネットワークにおける，
-マルチタスク処理，
-優先度順位スケジューリングや
-マルチホップネットワークのサポートを実現する．
-%The design goals for Nano-RK are multitasking, support for multi-hop networking, 
-%support for priority-based scheduling, 
-%timeliness and schedulability, extended WSN lifetime, 
-%application resource usage limits, and small footprint.
-2KbのRAMと18KbのROMを使用し，
-Rate Monotonic Scheduleingと
-Rate Harmonized Scheduling\cite{Rowe:2008:RSS:1475690.1475895}を利用することによって，
-ハードリアルタイムアプリケーションとソフトリアルタイムアプリケーションの
-両方をサポートする．
-%Nano-RK uses 2 Kb of RAM and 18 Kb of ROM. Nano-RK provides support for CPU, 
-%sensors, and network bandwidth reservations.
-%Nano-RK supports hard and soft real-time applications 
-%by the means of different real-time scheduling algorithms, 
-%e.g., rate monotonic scheduling and rate harmonized scheduling [32]. 
-現在動作確認がとれているセンシングプラットフォームとして，
-FireFly\cite{Rowe_firefly:a}と
-MicaZ\cite{Hill:2002:MWP:623308.624560}が挙げられる．
-Nano-RKのアーキテクチャは図\ref{fig:system_conf_of_nrk}のとおりである．
-%Nano-RK provides networking support through socket-like abstraction. 
-%Nano-RK supports FireFly [33] and MicaZ sensing platforms. 
-
-\begin{figure}[htbp]
- \begin{center}
-  \includegraphics[width=100mm]{./images/system_conf_of_nrk.eps}
- \end{center}
- \caption{Nano-RK アーキテクチャ}
- \label{fig:system_conf_of_nrk}
-\end{figure}
-
-
-
 %\subsection{MANTIS OS: An Embedded Multithreaded Operating System for Wireless Micro Sensor Platforms}
 \subsection{MANTIS OS}
 MANTIS OS\cite{Bhatti:2005:MOE:1160162.1160178}はLinuxやFreeBSDなどで
@@ -286,6 +258,52 @@ MANTIS OSはC言語で実装されており，
  \caption{MANTIS OS アーキテクチャ}
  \label{fig:system_conf_of_mantis}
 \end{figure}
+
+
+
+
+%\subsection{Nano-RK: an Energy-aware Resource-centric RTOS for Sensor Networks}
+\subsection{Nano-RK}
+Nano-RK\cite{Eswaran:2005:NER:1106608.1106672}は，
+無線センサネットワークにおけるマルチタスク処理機能を備えた
+リアルタイムオペレーティングシステムであり，
+%Nano-RK [31] is a fixed, preemptive multitasking real-time OS for WSNs. 
+%Nano-RKを設計することで，
+リソースの使用が制限された無線センサネットワークにおける，
+マルチタスク処理，
+優先度順位スケジューリングや
+マルチホップネットワークのサポートを実現する．
+%The design goals for Nano-RK are multitasking, support for multi-hop networking, 
+%support for priority-based scheduling, 
+%timeliness and schedulability, extended WSN lifetime, 
+%application resource usage limits, and small footprint.
+2KbのRAMと18KbのROMを使用し，
+Rate Monotonic Scheduleing\cite{Liu:1973:SAM:321738.321743}と
+Rate Harmonized Scheduling\cite{Rowe:2008:RSS:1475690.1475895}を利用することによって，
+ハードリアルタイムアプリケーションとソフトリアルタイムアプリケーションの
+両方をサポートする．
+%Nano-RK uses 2 Kb of RAM and 18 Kb of ROM. Nano-RK provides support for CPU, 
+%sensors, and network bandwidth reservations.
+%Nano-RK supports hard and soft real-time applications 
+%by the means of different real-time scheduling algorithms, 
+%e.g., rate monotonic scheduling and rate harmonized scheduling [32]. 
+現在動作確認がとれているセンシングプラットフォームとして，
+FireFly\cite{Rowe_firefly:a}と
+MicaZ\cite{Hill:2002:MWP:623308.624560}が挙げられる．
+Nano-RKのアーキテクチャは図\ref{fig:system_conf_of_nrk}のとおりである．
+%Nano-RK provides networking support through socket-like abstraction. 
+%Nano-RK supports FireFly [33] and MicaZ sensing platforms. 
+
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=100mm]{./images/system_conf_of_nrk.eps}
+ \end{center}
+ \caption{Nano-RK アーキテクチャ}
+ \label{fig:system_conf_of_nrk}
+\end{figure}
+
+
+
 
 
 
@@ -330,7 +348,7 @@ MANTIS OSはC言語で実装されており，
   \caption{オペレーティングシステムの比較}
   \begin{tabular}{|c||c|c|c|c|} \hline
     \backslashbox{}{} & \multicolumn{2}{|c|}{メリット} & \multicolumn{2}{|c|}{デメリット} \\ \hline \hline
-    イベントモデル & 省資源 & 低オーバヘッド & リアルタイム性の非サポート & プログラムが記述しにくい \\ \hline
+    イベントモデル & 省資源 & 低オーバヘッド & バッチ処理の採用 & 開発が困難である \\ \hline
     スレッドモデル & \multicolumn{2}{|c|}{リアルタイム性のサポート} & 資源の消費が大きい & 高オーバヘッド \\ \hline
   \end{tabular}
   \label{tab:merit_and_demerit}
@@ -343,13 +361,21 @@ MANTIS OSはC言語で実装されており，
 \section{まとめ}
 %本章では，まず，センサネットワークの一般公衆化について述べた．次いで，公衆センサデータがを扱ったシステム設計をする際に，データ管理の時間的密度という要素を考慮すべきであることを示した．そして，センサデータが時間的特殊性を持った多次元データであることを述べ，また，それに起因するセンサデータ管理における問題を提起した．
 %システムにおける地理的探索の必要性について記した．さらに，センサデータ以外のコンテンツを扱うシステムとセンサデータを扱うシステムの対比を行い，広域センサデータ管理システムにおけるデータ管理の時間的密度という概念を説明し，最後に，センサデータの時間的特殊性を取り上げた後，それに起因するセンサデータ管理におけるデータ管理の時間的密度の高さという問題を提起した．
+%本章では，まず，公衆広域センサデータが多次元データであるということから，本研究の根幹を
+%成す，Multidimensional Indexing（MI）という研究分野を紹介した．次に，Contents Delivery
+%Network（CDN）という分散したデータセンターで多次元データを管理するネットワークという
+%観点から捉え，センサデータには CDN で扱われるような特殊性が存在しないことを述べた．最後
+%に，公衆広域センサデータの分散管理手法を紹介し，センサデータの時間的特殊性が考慮されてい
+%ないことに言及した．
 
 
-イベント駆動モデルではタスクの中断をしないことを前提に設計されているため，
+本章では，無線センサネットワークにおけるオペレーティングシステムを
+イベントモデルとスレッドモデルの2つのモデルに大別し，
+各モデルにおけるオペレーティングシステムの概要を述べた．
+次いで，イベントモデルとスレッドモデルを比較し，
+イベントモデルではタスクの中断をしないことを前提に設計されているため，
 現在のセンサネットワーク用のオペレーティングシステムでは省資源性かつ低オーバヘッドであることと，
-リアルタイム性のサポートはトレードオフの関係にある.
-
-
+リアルタイム性のサポートはトレードオフの関係にあるということを示した.
 
 
 
