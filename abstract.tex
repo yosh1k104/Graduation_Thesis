@@ -3,21 +3,41 @@
 
 \vspace{6.18mm}
 
-\textbf{\Large T-Ring:センサデータの時間的特殊性に着目した多次元データ分散管理システム}
+\textbf{\Large 無線センサネットワークにおける時間的制約を伴ったイベントに対する省電力なオペレーティングシステム}
 \end{center}
 
 \vspace{10mm}
-近年，センサネットワークは環境モニタリングや，スマートグリッドなど，我々の生活を豊かにするインフラとして整備されつつある．また，センサノードの小型化やセンサを搭載したスマートフォンの普及により，センサ自体やセンサネットワークが，家庭，個人の規模で利用されつつあり，センサネットワークが我々を支える生活基盤と成り得る将来は遠くはない．
+近年技術の発展によりセンサノードの低価格化，高性能化が進み，
+それに伴い，ネットワークに繋がる物理センサが自動的に多様なデータをやり取りし，
+それらを様々な形で活用する無線センサネットワークが普及しつつある．
+主にその結果は，環境モニタリングやターゲットトラッキングにおいて
+顕著に表れており，センサネットワークが我々を支える生活基盤となり得る将来は遠くはない．
 
-本研究は，センサネットワークがより一般的な生活基盤となり，他の組織や家庭などとデータを公開，共有し，センサの具体的な所在を気にすることなく，自由にデータを利用できる世の中を想定する．この環境下で，公開，共有されたセンサデータを公衆センサデータとする．
+無線センサネットワークにおけるオペレーティングシステムは
+イベントモデルとスレッドモデルに分類できるが，
+環境モニタリングやターゲットトラッキングなどのリアルタイム性のある処理が
+長期間に渡って行われるような環境では，
+それらのモデルのどちらかを選択することは望ましくない．
 
-この公衆センサデータの管理を行うには，センサデータを緯度，経度，センサタイプを含んだ多次元のデータとして扱わなければならないが，従来の多次元データ管理の研究において，センサデータを対象とした研究は数が多くない．また，センサデータを対象にしていても，センサデータの時間的特殊性という性質に着目している研究は存在しない．
+Dunkelsらの開発したContikiでは，
+Protothreadsというシステムを採用することで，
+イベントモデルでありながらもスレッドモデルのようなプログラムの記述を実現している．
+しかしながら，Protothreadsを採用した場合でも，
+タスク実行中にさらに優先度の高いタスクの実行を要請された際に，
+スレッドモデルのように割り込みをし，タスクを切り替えることはできないのが現状である．
 
-本研究は，このセンサデータの時間的特殊性に着目した多次元データ管理システムであるT-Ringを提案する．T-Ringは時間を多次元データにおける1つの属性とせず，保存先変更の基準として扱うことで，データの保存，取得時の計算量を減らし，処理時間を減少させる．さらに，本研究ではこのT-Ringシステムの性能を評価することで，有用性を証明する．
+本研究では，Protothreadsを利用し，
+上記ような時間的制約を伴ったイベントが発生する環境における，
+省電力なオペレーティングシステムについて提案する．
+本システムは通常イベントモデルとしてタスクの実行を行うことで省電力を実現し，
+リアルタイム性の必要なタスク発生時には割り込みを発生させ，
+優先的にそのタスクの処理を行うことを可能にしている．
+最後に本システムの性能を評価し，有用性を証明する．
+
 
 \vspace{10mm}
 キーワード :\\
-\hspace{3.5em}公衆センサデータ, 多次元データ管理，P2P，分散ネットワーク，構造化オーバーレイネットワーク
+\hspace{3.5em}無線センサネットワーク，環境モニタリング，ターゲットトラッキング，オペレーティングシステム，リアルタイム処理
 
 \begin{flushright}
 \textbf{慶応義塾大学環境情報学部}\\
@@ -31,23 +51,62 @@
 \textbf{\Large Academic Year 2014}
 \vspace{6.18mm}
 
-\textbf{\Large T-Ring:Sensor Data Oriented Decentralized Multidimensional Indexing Focusing on Particularity of Time}
+\textbf{\Large An Energy-Efficient Operating System for Time-Constrained Events in Wireless Sensor Networks}
 \end{center}
 
 \vspace{10mm}
 
-In recent years, sensor networks are being developed as an infrastructure to enrich our lives such as environmental monitoring and smart grids. In addition, by the spread of sensor equipped smartphones and downsizing of sensor nodes, sensor networks (or the sensor itself) are being used in the scale of family or personal. In the future, sensor networks will become the foundation of our life supporting. 
+In recent years, 
+developed technology made 
+sensor nodes cheaper and high performance.
+As a result of this advanced technology, 
+Wireless Sensor Networks (WSN) 
+in which physical sensors connected with networks
+automatically transmit and receive various data 
+are constantly growing and used in various ways.
+In particular, the results are most remarkable
+in environmental monitoring and target tracking.
+In the future, WSN will become the foundation of our life supporting. 
 
-This research assumes that sensor networks could become the foundation and that everyone could get data from anywhere without being concerned about which sensor network they belong to. In this environment, these published and shared sensor data are called "public sensor data" in this paper. 
+Operating Systems (OS) in WSN
+are divided into events model and threads model.
+However, it is undesireble to 
+select OS from these models  
+in environments where 
+real time tasks have been processed 
+for a long period,
+such as environmental monitoring and target tracking.
 
-To manage this public sensor data, sensor data should be operated as Multidimensional Indexing which has latitude, longitude, sensor type and so on. However, in general works of Multidimensional Indexing, these researches were hardly intended on sensor data. No reserach focused on particularity of sensor time.   
+We can program applications easily
+with OS
+in events model which
+has the characteristics of threads model
+by using Protothreads 
+in Contiki proposed by Dunkels et al.
+However, 
+if a task which has more priority was posted 
+while another task has been processed,
+the processed task cannot be interrupted,
+%and we cannot switch the processed task to the arrived task 
+and the processed task cannot be switched to the arrived task 
+with Protothreads
+in the existing circumstances.
 
+In this research, we propose an energy-efficient operating system 
+using Protothreads
+in environments where events with time constraint occurred.
+In this system,
+tasks are usually executed as general events model OS, 
+which saves energy.
+If an event which requires real time processing occurred,
+current task will be interrupted and 
+real-time task will be dealt with as priority.
+Finally, we evaluate this system and prove feasibility.
 
-This research proposes T-Ring which is Multidimensional Indexing system for public sensor data. This is the first research focusing on particularity of sensor time. T-Ring doesn't use time attributtion in multidimensional data and  use a criterion of deciding the place of storage. T-Ring reduces amount of calculations on storing and retrieving of data and processing speed. This paper evaluates this system and proves feasibility.   
 
 \vspace{10mm}
 Keywords :\\
-\hspace{3.5em}Public Sensor Data, Multidimensional Indexing, P2P, Decentralize Network, Structured Overlay Network
+\hspace{3.5em}Wireless Sensor Networks, Environmental Monitoring, Target Tracking, Operating Systems, Real Time Processing 
 \begin{flushright}
 \textbf{Yoshiki Komachi}\\
 \vspace{5mm}
