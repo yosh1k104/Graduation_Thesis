@@ -15,8 +15,9 @@ Protothreadsについて紹介する．
 \end{large}
 \clearpage
 
-\section{Protothreads}
-既に述べたように，イベント駆動型は組み込みシステムやセンサネットワークにおいて，
+\section{Protothreads}\label{sec:protothreads}
+\ref{sec:event_model}で述べたように，
+イベントモデルは組み込みシステムやセンサネットワークにおいて，
 主流なオペレーティングシステムとなっている．
 しかし，イベント駆動型はメモリのオーバヘッド低く維持できる一方で，
 ユーザが一連の処理を細かい処理に分割しなければならないため，
@@ -281,7 +282,7 @@ process\_poll関数はプリエンプティブモードから安全に呼び出�
 %また，Protothreadsが
 %%イベント駆動型のオペレーティングシステムに実装されていながら，
 %マルチスレッド型のオペレーティングシステムとの親和性があると推測できることは既に述べたが，
-また以上の結果から，Protothreadsがマルチスレッド型のオペレーティングシステムとの
+また\ref{sec:protothreads}から，Protothreadsがマルチスレッド型のオペレーティングシステムとの
 親和性があると推測できるが，
 既存のProtothreadsの実装ではイベントに優先度をつけることなく，
 First In First Out（FIFO）の要領でイベントを呼び出している（図\ref{fig:asynchronous_event}）．
