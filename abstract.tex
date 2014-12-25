@@ -3,7 +3,7 @@
 
 \vspace{6.18mm}
 
-\textbf{\Large Protothreadsを用いた無線センサネットワークにおける時間的制約を伴ったイベントに対する省電力なオペレーティングシステム}
+\textbf{\Large 無線センサネットワークにおけるオペレーティングシステムに対する動的なスケジューリングスイッチング機構}
 \end{center}
 
 \vspace{10mm}
@@ -15,13 +15,16 @@
 
 無線センサネットワークにおけるオペレーティングシステムは
 イベントモデルとスレッドモデルに分類できるが，
-環境モニタリングやターゲットトラッキングなどのリアルタイム性のある処理が
+%環境モニタリングやターゲットトラッキングなどの
+リアルタイム性のある処理が
 長期間にわたって行われるような環境では，
 それらのモデルのどちらかを選択することは望ましくない．
-
-Dunkelsらの開発したContikiでは，
-Protothreadsというシステムを採用することで，
-イベントモデルでありながらもスレッドモデルのようなプログラムの記述を実現している．
+Dunkelsらの開発したContiki\cite{Dunkels:2004:CLF:1032658.1034117}
+では，
+Protothreads\cite{Dunkels:2006:PSE:1182807.1182811}
+というシステムを採用することで，
+%イベントモデルでありながらもスレッドモデルのようなプログラムの記述を実現している．
+イベントモデルでありながらもスレッドモデルと同様の挙動を行うことができる．
 しかしながら，Protothreadsを採用した場合でも，
 タスク実行中にさらに優先度の高いタスクの実行を要請された際に，
 スレッドモデルのように割り込みをし，タスクを切り替えることはできないのが現状である．
@@ -51,7 +54,7 @@ Protothreadsというシステムを採用することで，
 \textbf{\Large Academic Year 2014}
 \vspace{6.18mm}
 
-\textbf{\Large An Energy-Efficient Operating System Using Protothreads for Time-Constrained Events in Wireless Sensor Networks}
+\textbf{\Large A Dynamic Scherduling System for Operating Systems in Wireless Sensor Networks}
 \end{center}
 
 \vspace{10mm}
@@ -74,15 +77,16 @@ However, it is undesireble to
 select OS from these models  
 in environments where 
 real time tasks have been processed 
-for a long period,
-such as environmental monitoring and target tracking.
-
+for a long period.
+%for a long period,
+%such as environmental monitoring and target tracking.
 We can program applications easily
 with OS
 in events model which
 has the characteristics of threads model
-by using Protothreads 
-in Contiki proposed by Dunkels et al.
+by using Protothreads\cite{Dunkels:2006:PSE:1182807.1182811} 
+in Contiki\cite{Dunkels:2004:CLF:1032658.1034117}
+proposed by Dunkels et al.
 However, 
 if a task which has more priority was posted 
 while another task has been processed,
