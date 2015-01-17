@@ -1,7 +1,8 @@
 \chapter{評価}
 \begin{large}
 \begin{quote}
-本章では，本システムの評価を行う．
+本章では本システムの評価を行い，
+結果について考察する．
 \end{quote}
 \end{large}
 \clearpage
@@ -81,7 +82,7 @@ Contikiにおけるイベントタイマーによってセットされる値を�
 また，システムの安定性を評価するために，
 累積確率密度関数（Cumulative Distribution Function）
 を評価に取り入れ，
-その結果について\ref{sec:rt_study}にて考察する．
+その結果について\ref{sec:rt_discussion}にて考察する．
 
 
 
@@ -346,11 +347,31 @@ Contikiにおける最大値，平均値，標準偏差は
 \end{figure}
 
 
-\subsection{考察}\label{sec:rt_study}
+\subsection{考察}\label{sec:rt_discussion}
+ここでは，リアルタイムイベントが発生してから
+タスクが実行されるまでの時間について考察を行う．
+実験1から実験3からわかるようにイベントの発生頻度が
+増加した場合，
+ContikiではLatencyが増加することが伺える．
+同様に実験4から実験5のようなタスクの総数が増加した場合にも，
+ContikiにおけるLatencyは増加する傾向にある．
+
+\ref{sec:asynchronous_event}，\ref{sec:problems}
+で示したように，
+Contikiでは発生したイベントは
+FIFOの要領でポストされていくため，
+イベントが発生された際に
+キューにすでに実行待ちのイベントが挿入されていた場合，
+実行される時間が遅くなってしまう．
+それに対して，
+D-Switchでは，リアルタイムイベントが発行された際には，
+実行中のタスクがあった場合でも，
+そのタスクの実行を一時中断して，
+リアルタイムタスクの実行を行うことができるため，
+Latencyを低く維持することを可能にしている．
 
 
 \section{消費電力における評価}
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
 \subsection{評価環境}
 
@@ -363,5 +384,4 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
 
 \section{まとめ}
-aaaaaaaaaaaaaaaaa
 %本章では，まず，本研究に評価方針，実験環境を述べた．次に，実験環境内における実験への影響を調査するため，それぞれのリージョンからICMPにおける，Message Requestを送信し，リプライが返されるまでの時間（RTT）を計測した．その結果，RTTは0.400ms以内であり，十分に無視できることを述べた．次いで，保存ピア探索における計算コスト，データの保存に要する時間，データの取得に要する時間の観点から評価を行った．その結果から，考察を行い，理論値と実際の値に齟齬が存在することを明らかにし，その違いは，T-Ringにおいて，保存や取得の対象となるデータの時間情報の取得を行う際に要する時間により生じていることに言及した．
