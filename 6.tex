@@ -17,10 +17,10 @@
 \item{リアルタイム性}\\
 本研究は環境モニタリングやターゲットトラッキングのような
 無線センサネットワークにおけるアプリケーションを対象としているため，
-イベントモデルである拡張する前のContikiと本システムの比較し，
-リアルタイムタスク発生から実行までの時間を評価する．
+イベントモデルである拡張する前のContikiと本システムを比較し，
+リアルタイムイベント発生から実行までの時間を評価する．
 \newline
-\item{省資源性かつ低オーバヘッド}\\
+\item{消費電力}\\
 本システムではリアルタイム処理が必要なイベントが発生しない場合には，
 イベントモデルを採用している．
 本要件が満たされているかどうかを確認するために，
@@ -56,10 +56,128 @@
 %効率的に無線資源を利用し，
 %無線通信に伴う電力を削減することができるだろう．
 
-\section{評価環境}
 
 
-\begin{table}[htb]
+\section{リアルタイム性における評価}
+\subsection{導入}
+タスクの総数を一定にした場合と
+タスクの総数を変化させる場合についてそれぞれ，
+イベント発生の頻度を変化させながら，
+リアルタイムイベントが発生してから
+対象となるタスクが実行されるまでの時間（Latency）を評価する．
+イベント発生の頻度を変化させるために，
+Contikiにおけるイベントタイマーによってセットされる値を変化させる．
+イベントタイマーは，
+タイマーと現在時刻を比較し，
+発火時刻をすぎている場合，
+タスクをキューへと加える．
+タイマーを実行するタスクは他のタスクと同じ優先度で周期的に実行される．
+%イベント発生の頻度に関しては，
+%1秒あたりの
+%システムクロックによって生成される一定のテンポ（tick）数を
+%CLOCK\_CONF\_SECONDとし，
+%イベント発生の時刻をこのCLOCK\_CONF\_SECONDを
+%具体的に，基準となる値（CLOCK\_CONF\_SECOND）を用いて変化させていく．
+また，システムの安定性を評価するために，
+累積確率密度関数（Cumulative Distribution Function）
+を評価に取り入れ，
+その結果について\ref{sec:rt_study}にて考察する．
+
+
+
+\subsection{評価環境}
+本評価ではContikiのために設計された仮想マシン上の
+シミュレータCooja\cite{osterlind2006cross}を利用する．
+仮想マシンの詳細を表\ref{tab:instant_contiki}に記す．
+また\ref{sec:implement_env}で示したように，
+本実験では対象とするノードとしてMicaZ\cite{Hill:2002:MWP:623308.624560}
+を利用する．
+%を利用し，タスクの総数とイベント発生の頻度を変化させ，
+%それぞれについてリアルタイムイベントが発生してから，
+%対象となるタスクが実行されるまでの時間（Latency）を
+%評価する．
+
+\begin{table}[htbp]
+  \centering
+  \caption{評価環境}
+  \begin{tabular}{|l||c|} \hline
+  	項目	 & 環境 \\ \hline \hline
+	オペレーティングシステム & Ubuntu 12.04 \\ \hline
+	メモリ & 1024 MB \\ \hline
+  \end{tabular}
+  \label{tab:instant_contiki}
+\end{table}
+
+
+
+
+
+
+\subsection{実験結果}
+%本評価項目における結果について示す．
+%イベント発生の頻度に関しては，
+%1秒あたりの
+%システムクロックによって生成される一定のテンポ（tick）数を
+%CLOCK\_CONF\_SECONDとし，
+%イベント発生の時刻をこのCLOCK\_CONF\_SECONDを
+タスクの総数を一定にした場合と
+タスクの総数を変化させる場合についてそれぞれ，
+%イベント発生の頻度を変化させながら，
+実験によって得られた結果を示す．
+ここで示すContikiは拡張前のContikiを，
+D-Switchは拡張された後のContikiを示している．
+
+\subsubsection{タスクの総数を固定した場合}
+
+\vspace{0.5em}タスクの総数を固定し，
+イベントの発生頻度を増やしながら実験を300秒ずつ，3回行った．
+
+\begin{enumerate}
+\item{実験1}\\
+表\ref{tab:latency1}，図\ref{fig:latency1}
+からわかるように，
+D-SwitchとContikiを比較してみると，
+最小値，中央値の値に差異は見られない．
+しかしながら，
+ContikiにおけるLatencyの最大値が
+163msを記録することが数回あったため，
+平均値，標準偏差ともにD-Switchを上回る結果となった．
+また図\ref{fig:cdf1}より，
+Contikiでは最小値を記録した回数が
+D-Switchよりも多いが，
+D-SwitchではLatencyが81ms以下となる場合が
+98\%を占めているため，
+D-Switchの方が安定して低いLatencyを維持することに成功している．
+\newline
+\item{実験2}\\
+表\ref{tab:latency2}，図\ref{fig:latency2}より
+実験1と同様にLatencyを比較したところ，
+最小値，中央値の値に差異はなく，
+最大値は実験1で得られた値に等しい．
+しかしながら，
+実験1と比較して，ContikiにおけるLatencyが最大となる
+場合が多く，平均値，標準偏差の値が増加した．
+図\ref{fig:cdf2}により得られた
+累積密度確率関数の結果も
+図\ref{fig:cdf1}と類似している．
+\newline
+\item{実験3}\\
+表\ref{tab:latency3}，図\ref{fig:latency3}が示すとおり，
+最小値はContikiがD-Switchを下回ったが，
+最大値はContikiがD-Switchを上回る245msを記録しているため，
+ContikiにおけるLatencyの
+平均値，標準偏差がそれぞれD-Switchを上回る結果となった．
+%上記の実験と比較して，
+%D-Switchは平均値，標準偏差ともに大きな変化は見られないが，
+%実験2と比較したところ，
+さらに図\ref{fig:cdf3}より，
+D-Switchでは94\%が81msのLatencyでリアルタイムタスクの実行を
+行うことができており，
+安定性においてD-Switchの優位性を示している．
+\end{enumerate}
+
+
+\begin{table}[htbp]
   \centering
   \caption{実験結果1}
   \begin{tabular}{|c||c|c|c|c|c|} \hline
@@ -87,7 +205,7 @@
 \end{figure}
 
 
-\begin{table}[htb]
+\begin{table}[htbp]
   \centering
   \caption{実験結果2}
   \begin{tabular}{|c||c|c|c|c|c|} \hline
@@ -115,7 +233,7 @@
 \end{figure}
 
 
-\begin{table}[htb]
+\begin{table}[htbp]
   \centering
   \caption{実験結果3}
   \begin{tabular}{|c||c|c|c|c|c|} \hline
@@ -144,9 +262,34 @@
 
 
 
+\subsubsection{タスクの総数を変化させた場合}
+
+\vspace{0.5em}タスクの総数を増やしながら
+実験を300秒ずつ，2回行った．
+
+\begin{enumerate}
+\item{実験4}\\
+表\ref{tab:latency4}，図\ref{fig:latency4}が示すとおり，
+ContikiではLatencyの最小値が80msを記録し，
+両者における最小値となったが，
+D-Switchでは観測されたすべての値が81msを記録しており，
+標準偏差0を示したことや，
+100\%が81msのLatencyで実行されていること
+（図\ref{fig:cdf4}）からも，
+本システムの安定性を裏付ける結果となった．
+\newline
+\item{実験5}\\
+表\ref{tab:latency5}，図\ref{fig:latency5}より，
+Contikiにおける最大値，平均値，標準偏差は
+全実験中最大の値となった．
+それに対して，D-Switchは
+図\ref{fig:cdf5}にも示されるように，
+97\%が81ms以内にリアルタイムタスクの実行を許可されている．
+\end{enumerate}
 
 
-\begin{table}[htb]
+
+\begin{table}[htbp]
   \centering
   \caption{実験結果4}
   \begin{tabular}{|c||c|c|c|c|c|} \hline
@@ -175,7 +318,7 @@
 
 
 
-\begin{table}[htb]
+\begin{table}[htbp]
   \centering
   \caption{実験結果5}
   \begin{tabular}{|c||c|c|c|c|c|} \hline
@@ -203,9 +346,22 @@
 \end{figure}
 
 
+\subsection{考察}\label{sec:rt_study}
 
 
-\section{考察}
+\section{消費電力における評価}
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+\subsection{評価環境}
+
+
+\subsection{実験結果}
+
+
+\subsection{考察}
+
+
 
 \section{まとめ}
+aaaaaaaaaaaaaaaaa
 %本章では，まず，本研究に評価方針，実験環境を述べた．次に，実験環境内における実験への影響を調査するため，それぞれのリージョンからICMPにおける，Message Requestを送信し，リプライが返されるまでの時間（RTT）を計測した．その結果，RTTは0.400ms以内であり，十分に無視できることを述べた．次いで，保存ピア探索における計算コスト，データの保存に要する時間，データの取得に要する時間の観点から評価を行った．その結果から，考察を行い，理論値と実際の値に齟齬が存在することを明らかにし，その違いは，T-Ringにおいて，保存や取得の対象となるデータの時間情報の取得を行う際に要する時間により生じていることに言及した．
