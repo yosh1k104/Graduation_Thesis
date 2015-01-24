@@ -4,7 +4,7 @@
 本章では，まず，
 無線センサネットワークにおけるオペレーティングシステムについての
 導入を行う．
-次いで，無線センサネットワークにおけるオペレーティングシステムの分類を行い，
+次いで，無線センサネットワークにおけるオペレーティングシステムを分類し，
 それぞれについて具体的なオペレーティングシステムを例に挙げながら，
 その特徴についての考察を行う．
 最後に，それぞれのモデルを比較し，
@@ -23,7 +23,6 @@
 \cite{10.1109/IISWC.2005.1526017}．
 無線センサネットワークにおけるオペレーティングシステムにはこれら
 のタスクを効率よく開発，実行するための仕組みが必要である．
-
 本節では，
 無線センサネットワークにおけるオペレーティングシステムを
 構築するにあたって，
@@ -110,7 +109,7 @@
 
 \vspace{0.5em}課せられた処理が期限内に終了しなかったとき，
 システム全体に致命的なダメージが生じてしまうリアルタイム処理が
-ハードリアルタイム処理である．
+ハードリアルタイム処理である（図\ref{fig:hardrealtime}）．
 したがって，期限内での終了が保証されなければならないシステムに用いられる．
 
 %TODO 図の挿入
@@ -118,9 +117,24 @@
 
 \vspace{0.5em}ソフトリアルタイム処理を行うシステムでは，
 期限内に処理が終了しなくてもシステム全体に致命的なダメージを与えることはない．
-ただし，処理自体の価値は終了期限とともに減少していく．
+ただし，処理自体の価値は終了期限とともに減少していく（図\ref{fig:softrealtime}）．
 
 
+\begin{figure}[htbp]
+ \begin{minipage}{0.5\hsize} \begin{center}
+     \includegraphics[width=70mm]{./images/hardrealtime.eps}
+    \end{center}
+    \caption{ハードリアルタイム}
+    \label{fig:hardrealtime}
+ \end{minipage}
+ \begin{minipage}{0.5\hsize}
+    \begin{center}
+     \includegraphics[width=70mm]{./images/softrealtime.eps}
+    \end{center}
+    \caption{ソフトリアルタイム}
+    \label{fig:softrealtime}
+ \end{minipage}
+\end{figure}
 
 
 
@@ -131,21 +145,23 @@
 
 \section{イベントモデル}\label{sec:event_model}
 イベントモデルで構築されたオペレーティングシステムは全てのタスクをイベントによって起動し，
-run-to-completion で実行する形態のオペレーティングシステムである．
+run-to-completion で実行する形態のオペレーティングシステムである
+\cite{survey_os}．
 イベントモデルは図\ref{fig:event_model}に示されるように，
 ひとつのイベントループと多数のイベントハンドラから構成される．
 イベントループはイベントの到着を待ち，
-イベントが届くとイベントに関連付けられているイベントハンドラを実行する．
+イベントが届くとそのイベントに関連付けられているイベントハンドラを実行する．
 イベントモデルではイベント駆動型プログラミングによってアプリケーションが記述される．
 イベントハンドラは寿命の短いrun-to-completionで記述され，
 プリエンプションされることがない．
-つまり，イベントモデルはタスクは関数呼び出しと等価であり，
+%つまり，イベントモデルはタスクは関数呼び出しと等価であり，
+つまり，イベントモデルにおいてタスクは関数呼び出しと等価であり，
 実行ストリームがひとつで実現されるため各タスクでローカル変数の領域を共有可能であることから，
-省資源かつ低オーバヘッドで並列性を実現できる．
+消費電力を抑えつつ，並列性を実現できる．
 また，各タスクが不可分に実行されるので共有資源に対する排他制御が不要となり，
 安全性が高い．
 さらに，CPU の特殊な機能を用いなくても実装できるため移植性も高い．
-省資源性と低オーバヘッドの実現から，
+低消費電力の実現から，
 無線センサネットワークにおけるオペレーティングシステムとして
 イベントモデルが選択される場合が多く，
 現在最も主流なオペレーティングシステムとなっている．
@@ -163,9 +179,11 @@ run-to-completion で実行する形態のオペレーティングシステム�
 
 %\subsection{TinyOS: An Operating System for Sensor Networks}
 \subsection{TinyOS}
-イベント駆動型のオペレーティングシステムの中でも，最も代表的なものが
+イベントモデルのオペレーティングシステムの中でも，最も代表的なものが
 TinyOS\cite{Hill:2000:SAD:356989.356998}\cite{Levis04tinyos:an}である．
-TinyOSはカリフォルニア大学バークレー校のSmartDust Projectで開発されたオペレーティングシステムである．
+TinyOSはカリフォルニア大学バークレー校のスマートダストプロジェクト
+\cite{Kahn:1999:NCC:313451.313558}
+で開発されたオペレーティングシステムで，
 現在無線センサネットワークの標準的なオペレーティングシステムとして扱われており，
 Crossbow社から発売されているMica2やMicaZ\cite{Hill:2002:MWP:623308.624560}，
 Telos\cite{Polastre:2005:TEU:1147685.1147744}，iMote\cite{Nachman:2005:IMP:1147685.1147760}上で動作する．
@@ -177,7 +195,7 @@ TinyOSのアーキテクチャを図\ref{fig:system_conf_of_tinyos}に示す．
  \begin{center}
   \includegraphics[width=100mm]{./images/system_conf_of_tinyos.eps}
  \end{center}
- \caption{TinyOS アーキテクチャ}
+ \caption{TinyOS アーキテクチャ\cite{tinyos_arch}}
  \label{fig:system_conf_of_tinyos}
 \end{figure}
 
@@ -190,7 +208,7 @@ Cコンパイラによって実行形式へと変換される．
 nesC言語を採用することによって，
 イベントモデルの持つプログラムの開発のし辛さを提供し，
 新しい言語を学ばなければならないという手間がかかってしまうものの，
-nesCはイベント駆動型に特化した最適化を行っているため省資源性を実現している．
+nesCはイベントモデルに特化した最適化を行っているため省資源性を実現している．
 
 
 %Earlier versions of TinyOS supported 
@@ -244,8 +262,9 @@ nesCはイベント駆動型に特化した最適化を行っているため省�
 %関数の型違反に伴うバグを防ぐ仕組みを取り入れている．
 
 \subsection{Contiki}
-Contiki\cite{Dunkels:2004:CLF:1032658.1034117}はC言語で記述された
-最も正統派のイベント駆動型オペレーティングシステムである．
+Contiki\cite{Dunkels:2004:CLF:1032658.1034117}はC言語で記述された，
+%最も正統派の
+イベントモデルを採用したオペレーティングシステムである．
 Contikiでは動的モジュールを実現するために
 Executable and Linkable Format（ELF）形式のファイルを
 ロード可能な仕組みを提供している\cite{Dunkels06run-timedynamic}．
@@ -261,7 +280,7 @@ Contikiのアーキテクチャを図\ref{fig:system_conf_of_contiki}に示す
 %Graphical User Interface, a web browser, a personal web server, a simple telnet client, a screensaver, 
 %and virtual network computing. 
 
-Contikiにおいて，イベント駆動型の利点を失わずにスレッド形式で
+Contikiにおいて，イベントモデルの利点を失わずにスレッド形式で
 プログラムの書きやすさを実現したのがProtothreads\cite{Dunkels:2006:PSE:1182807.1182811}である．
 Protothreadsではイベントハンドラの中でスレッド的に動作させたい部分を
 PT\_BEGINとPT\_ENDで囲み，
@@ -290,9 +309,9 @@ PT\_WAIT\_UNTILで条件付きブロックを行うことで，
 スレッドモデルではユーザはあたかもCPUを占有しているかのように
 一連の処理をひとつのスレッドとして記述することができるため，
 プログラムが書きやすい．
-また，プリエンプションを行うことも想定しているため，
+またプリエンプションを行うことも想定しているため，
 %ジョブの実行を設定された時間通りに作動させる，
-ハードリアルタイム処理をサポートすることができる．
+リアルタイム処理をサポートすることができる．
 本節では，スレッドモデルの例として，
 MANTIS OSとNano-RKを紹介し，
 その特徴について考察する．
@@ -315,7 +334,7 @@ MANTIS OS\cite{Bhatti:2005:MOE:1160162.1160178}はLinuxやFreeBSDなどで
 用いられているスレッドと同様の機能をセンサノード上で
 実現したスレッドモデルのオペレーティングシステムである．
 開発者はLinuxやFreeBSDなどで用いられているソフトウェアを
-大きな変更無しにMANTIS OS上に移植することができる．
+大きな変更なくMANTIS OS上に移植することができる．
 また，MANTIS OS上の1つのスレッドとして
 TinyOS\cite{Hill:2000:SAD:356989.356998}\cite{Levis04tinyos:an}を
 実装することも可能であり\cite{Trumpler06asystematic}，
@@ -356,14 +375,14 @@ Nano-RK\cite{Eswaran:2005:NER:1106608.1106672}は，
 %Nano-RK [31] is a fixed, preemptive multitasking real-time OS for WSNs. 
 %Nano-RKを設計することで，
 リソースの使用が制限された無線センサネットワークにおける，
-マルチタスク処理，
-優先度順位スケジューリングや
+マルチタスク処理や
+優先度順位スケジューリング，
 マルチホップネットワークのサポートを実現する．
 %The design goals for Nano-RK are multitasking, support for multi-hop networking, 
 %support for priority-based scheduling, 
 %timeliness and schedulability, extended WSN lifetime, 
 %application resource usage limits, and small footprint.
-2KbのRAMと18KbのROMを使用し，
+2KbitsのRAMと18KbitsのROMを使用し，
 Rate Monotonic Scheduleing\cite{Liu:1973:SAM:321738.321743}と
 Rate Harmonized Scheduling\cite{Rowe:2008:RSS:1475690.1475895}を利用することによって，
 ハードリアルタイムアプリケーションとソフトリアルタイムアプリケーションの
@@ -374,8 +393,9 @@ Rate Harmonized Scheduling\cite{Rowe:2008:RSS:1475690.1475895}を利用するこ
 %by the means of different real-time scheduling algorithms, 
 %e.g., rate monotonic scheduling and rate harmonized scheduling [32]. 
 現在動作確認がとれているセンシングプラットフォームとして，
-FireFly\cite{Rowe_firefly:a}と
-MicaZ\cite{Hill:2002:MWP:623308.624560}が挙げられる．
+MicaZ\cite{Hill:2002:MWP:623308.624560}と
+FireFly\cite{Rowe_firefly:a}
+が挙げられる．
 Nano-RKのアーキテクチャは図\ref{fig:system_conf_of_nrk}のとおりである．
 %Nano-RK provides networking support through socket-like abstraction. 
 %Nano-RK supports FireFly [33] and MicaZ sensing platforms. 
@@ -400,11 +420,12 @@ Nano-RKのアーキテクチャは図\ref{fig:system_conf_of_nrk}のとおりで
 イベントモデルではプリエンプションされることを前提としていないため，
 実行ストリームがひとつで実現され，
 ローカル変数の領域がそれぞれのタスクで共有することができるようになることから，
-省資源で低オーバヘッドなシステムを構築することが可能になる．
+%省資源で低オーバヘッドな
+消費電力の少ないシステムを構築することが可能になる．
 しかしながら，イベントモデルではユーザが一連の処理を細かい処理に分割しなければならないため，
 アプリケーションの開発が困難になってしまい，
 %アプリケーション開発時に開発者がプログラムを書き辛いという問題が発生する．
-ハードリアルタイム処理のサポートもできない．
+リアルタイム処理のサポートもできない．
 %さらに，イベントモデルではタスクのプリエンプションをしないことを前提に設計されているので
 %ハードリアルタイム処理のサポートができない．
 
@@ -415,7 +436,9 @@ Nano-RKのアーキテクチャは図\ref{fig:system_conf_of_nrk}のとおりで
 結果として，スレッドモデルではリアルタイム性をサポートすることができる．
 また，それぞれの処理をひとつのスレッドとみなし記述をすることが可能となるため，
 開発者がアプリケーションを開発することを容易にする．
-しかしながら，プリエンプション時のオーバヘッドの大きいことや必要とされる資源が多いこと，
+しかしながら，プリエンプション時の
+%オーバヘッドの大きいことや必要とされる資源が多いこと，
+電力の消費が激しいことや，
 スレッド間の共有資源へのアクセス制御が必要となるために
 安全性が損なわれるなどの欠点を兼ね備えている．
 
@@ -434,8 +457,9 @@ Nano-RKのアーキテクチャは図\ref{fig:system_conf_of_nrk}のとおりで
   \caption{オペレーティングシステムの比較}
   \begin{tabular}{|c||c|c|c|c|} \hline
     \backslashbox{}{} & \multicolumn{2}{|c|}{メリット} & \multicolumn{2}{|c|}{デメリット} \\ \hline \hline
-    イベントモデル & 省資源 & 低オーバヘッド & バッチ処理の採用 & 開発が困難である \\ \hline
-    スレッドモデル & \multicolumn{2}{|c|}{リアルタイム性のサポート} & 資源の消費が大きい & 高オーバヘッド \\ \hline
+    イベントモデル & \multicolumn{2}{|c|}{低消費電力} & バッチ処理の採用 & 開発が困難である \\ \hline
+    %スレッドモデル & \multicolumn{2}{|c|}{リアルタイム性のサポート} & 資源の消費が大きい & 高オーバヘッド \\ \hline
+    スレッドモデル & \multicolumn{2}{|c|}{リアルタイム性のサポート} & \multicolumn{2}{|c|}{高消費電力} \\ \hline
   \end{tabular}
   \label{tab:merit_and_demerit}
 \end{table}
@@ -462,7 +486,9 @@ Nano-RKのアーキテクチャは図\ref{fig:system_conf_of_nrk}のとおりで
 各モデルにおけるオペレーティングシステムの概要を述べた．
 最後に，イベントモデルとスレッドモデルを比較し，
 イベントモデルではタスクの中断をしないことを前提に設計されているため，
-現在のセンサネットワーク用のオペレーティングシステムでは省資源性かつ低オーバヘッドであることと，
+現在のセンサネットワーク用のオペレーティングシステムでは
+%省資源性かつ低オーバヘッド
+低消費電力であることと，
 リアルタイム性のサポートはトレードオフの関係にあるということを示した.
 
 

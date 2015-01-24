@@ -18,15 +18,22 @@
 \item{リアルタイム性}\\
 本研究は環境モニタリングやターゲットトラッキングのような
 無線センサネットワークにおけるアプリケーションを対象としているため，
-イベントモデルである拡張する前のContikiと本システムを比較し，
+イベントモデルである拡張する前のContiki\cite{Dunkels:2004:CLF:1032658.1034117}
+と本システムを比較し，
 リアルタイムイベント発生から実行までの時間を評価する．
 \newline
 \item{消費電力}\\
 本システムではリアルタイム処理が必要なイベントが発生しない場合には，
 イベントモデルを採用している．
-本要件が満たされているかどうかを確認するために，
-純粋なスレッドモデルであるNano-RK上で同様の動作をするアプリケーションを実行し，
-その際に消費される電力について評価を行う．
+消費電力を抑えるという
+要件が満たされているかどうかを確認するために，
+%純粋なスレッドモデルであるNano-RK上で同様の動作をするアプリケーションを実行し，
+%その際に消費される電力について評価を行う．
+ランダムにリアルタイムイベントを発生させ，
+イベント発生後現在の電圧をベースステーションへと送信する
+アプリケーションを，
+拡張前のContikiと本システム上で実行し，
+それぞれの消費電力を比較し，考察する．
 \end{enumerate}
 
 
@@ -72,7 +79,7 @@ Contikiにおけるイベントタイマーによってセットされる値を�
 タイマーと現在時刻を比較し，
 発火時刻をすぎている場合，
 タスクをキューへと加える．
-タイマーを実行するタスクは他のタスクと同じ優先度で周期的に実行される．
+%タイマーを実行するタスクは他のタスクと同じ優先度で周期的に実行される．
 %イベント発生の頻度に関しては，
 %1秒あたりの
 %システムクロックによって生成される一定のテンポ（tick）数を
@@ -110,10 +117,6 @@ Contikiにおけるイベントタイマーによってセットされる値を�
 \end{table}
 
 
-
-
-
-
 \subsection{実験結果}
 %本評価項目における結果について示す．
 %イベント発生の頻度に関しては，
@@ -125,13 +128,13 @@ Contikiにおけるイベントタイマーによってセットされる値を�
 タスクの総数を変化させる場合についてそれぞれ，
 %イベント発生の頻度を変化させながら，
 実験によって得られた結果を示す．
-ここで示すContikiは拡張前のContikiを，
-D-Switchは拡張された後のContikiを示している．
+以降より，Contikiは拡張前のContikiを，
+D-Switchは拡張された後のContikiを示すこととする．
 
 \subsubsection{タスクの総数を固定した場合}
 
 \vspace{0.5em}タスクの総数を固定し，
-イベントの発生頻度を増やしながら実験を300秒ずつ，3回行った．
+実験ごとにイベントの発生頻度を増やしながら300秒ずつ，3回行った．
 
 \begin{enumerate}
 \item{実験1}\\
@@ -182,7 +185,7 @@ D-Switchでは94\%が81msのLatencyでリアルタイムタスクの実行を
   \centering
   \caption{実験結果1}
   \begin{tabular}{|c||c|c|c|c|c|} \hline
-    \backslashbox{}{} & 最小値 & 最大値 & 中央値 & 平均値 & 標準偏差 \\ \hline \hline
+    \backslashbox{}{} & 最小値（ms） & 最大値（ms） & 中央値（ms） & 平均値（ms） & 標準偏差 \\ \hline \hline
     D-Switch & 80 & 82 & 81 & 81 & 0.17 \\ \hline
     Contiki & 80 & 163 & 81 & 97.97 & 33.39 \\ \hline
   \end{tabular}
@@ -193,7 +196,7 @@ D-Switchでは94\%が81msのLatencyでリアルタイムタスクの実行を
  \begin{center}
   \includegraphics[width=120mm]{./images/latency1.eps}
  \end{center}
- \caption{実験結果1}
+ \caption{Latency1}
  \label{fig:latency1}
 \end{figure}
 
@@ -201,7 +204,7 @@ D-Switchでは94\%が81msのLatencyでリアルタイムタスクの実行を
  \begin{center}
   \includegraphics[width=120mm]{./images/cdf1.eps}
  \end{center}
- \caption{実験結果1}
+ \caption{累積確率密度関数1}
  \label{fig:cdf1}
 \end{figure}
 
@@ -210,7 +213,7 @@ D-Switchでは94\%が81msのLatencyでリアルタイムタスクの実行を
   \centering
   \caption{実験結果2}
   \begin{tabular}{|c||c|c|c|c|c|} \hline
-    \backslashbox{}{} & 最小値 & 最大値 & 中央値 & 平均値 & 標準偏差 \\ \hline \hline
+    \backslashbox{}{} & 最小値（ms） & 最大値（ms） & 中央値（ms） & 平均値（ms） & 標準偏差 \\ \hline \hline
     D-Switch & 80 & 82 & 81 & 81.02 & 0.19 \\ \hline
     Contiki & 80 & 163 & 81 & 108.37 & 38.49 \\ \hline
   \end{tabular}
@@ -221,7 +224,7 @@ D-Switchでは94\%が81msのLatencyでリアルタイムタスクの実行を
  \begin{center}
   \includegraphics[width=120mm]{./images/latency2.eps}
  \end{center}
- \caption{実験結果2}
+ \caption{Latency2}
  \label{fig:latency2}
 \end{figure}
 
@@ -229,7 +232,7 @@ D-Switchでは94\%が81msのLatencyでリアルタイムタスクの実行を
  \begin{center}
   \includegraphics[width=120mm]{./images/cdf2.eps}
  \end{center}
- \caption{実験結果2}
+ \caption{累積確率密度関数2}
  \label{fig:cdf2}
 \end{figure}
 
@@ -238,7 +241,7 @@ D-Switchでは94\%が81msのLatencyでリアルタイムタスクの実行を
   \centering
   \caption{実験結果3}
   \begin{tabular}{|c||c|c|c|c|c|} \hline
-    \backslashbox{}{} & 最小値 & 最大値 & 中央値 & 平均値 & 標準偏差 \\ \hline \hline
+    \backslashbox{}{} & 最小値（ms） & 最大値（ms） & 中央値（ms） & 平均値（ms） & 標準偏差 \\ \hline \hline
     D-Switch & 81 & 82 & 81 & 81.02 & 0.24 \\ \hline
     Contiki & 80 & 245 & 81 & 98.36 & 49.61 \\ \hline
   \end{tabular}
@@ -249,7 +252,7 @@ D-Switchでは94\%が81msのLatencyでリアルタイムタスクの実行を
  \begin{center}
   \includegraphics[width=120mm]{./images/latency3.eps}
  \end{center}
- \caption{実験結果3}
+ \caption{Latency3}
  \label{fig:latency3}
 \end{figure}
 
@@ -257,7 +260,7 @@ D-Switchでは94\%が81msのLatencyでリアルタイムタスクの実行を
  \begin{center}
   \includegraphics[width=120mm]{./images/cdf3.eps}
  \end{center}
- \caption{実験結果3}
+ \caption{累積確率密度関数3}
  \label{fig:cdf3}
 \end{figure}
 
@@ -294,7 +297,7 @@ Contikiにおける最大値，平均値，標準偏差は
   \centering
   \caption{実験結果4}
   \begin{tabular}{|c||c|c|c|c|c|} \hline
-    \backslashbox{}{} & 最小値 & 最大値 & 中央値 & 平均値 & 標準偏差 \\ \hline \hline
+    \backslashbox{}{} & 最小値（ms） & 最大値（ms） & 中央値（ms） & 平均値（ms） & 標準偏差 \\ \hline \hline
     D-Switch & 81 & 81 & 81 & 81 & 0 \\ \hline
     Contiki & 80 & 326 & 81 & 102 & 48.52 \\ \hline
   \end{tabular}
@@ -305,7 +308,7 @@ Contikiにおける最大値，平均値，標準偏差は
  \begin{center}
   \includegraphics[width=120mm]{./images/latency4.eps}
  \end{center}
- \caption{実験結果4}
+ \caption{Latency4}
  \label{fig:latency4}
 \end{figure}
 
@@ -313,7 +316,7 @@ Contikiにおける最大値，平均値，標準偏差は
  \begin{center}
   \includegraphics[width=120mm]{./images/cdf4.eps}
  \end{center}
- \caption{実験結果4}
+ \caption{累積確率密度関数4}
  \label{fig:cdf4}
 \end{figure}
 
@@ -323,7 +326,7 @@ Contikiにおける最大値，平均値，標準偏差は
   \centering
   \caption{実験結果5}
   \begin{tabular}{|c||c|c|c|c|c|} \hline
-    \backslashbox{}{} & 最小値 & 最大値 & 中央値 & 平均値 & 標準偏差 \\ \hline \hline
+    \backslashbox{}{} & 最小値（ms） & 最大値（ms） & 中央値（ms） & 平均値（ms） & 標準偏差 \\ \hline \hline
     D-Switch & 80 & 82 & 81 & 81.02 & 0.21 \\ \hline
     Contiki & 80 & 327 & 81 & 121.26 & 63.95 \\ \hline
   \end{tabular}
@@ -334,7 +337,7 @@ Contikiにおける最大値，平均値，標準偏差は
  \begin{center}
   \includegraphics[width=120mm]{./images/latency5.eps}
  \end{center}
- \caption{実験結果5}
+ \caption{Latency5}
  \label{fig:latency5}
 \end{figure}
 
@@ -342,15 +345,20 @@ Contikiにおける最大値，平均値，標準偏差は
  \begin{center}
   \includegraphics[width=120mm]{./images/cdf5.eps}
  \end{center}
- \caption{実験結果5}
+ \caption{累積確率密度関数5}
  \label{fig:cdf5}
 \end{figure}
 
-
 \subsection{考察}\label{sec:rt_discussion}
-ここでは，リアルタイムイベントが発生してから
-タスクが実行されるまでの時間について考察を行う．
-実験1から実験3からわかるようにイベントの発生頻度が
+%ここでは，リアルタイムイベントが発生してから
+%タスクが実行されるまでの時間について考察を行う．
+図\ref{fig:d-switch_latency}，
+図\ref{fig:contiki_latency}はそれぞれ，
+D-Switch，ContikiのLatencyに関するすべての実験結果を，
+図\ref{fig:cdf_d-switch}，
+図\ref{fig:cdf_contiki}はそれぞれ，
+D-Switch，Contikiの累積確率密度関数に関するすべての実験結果を示している．
+実験1から実験3にてわかるようにイベントの発生頻度が
 増加した場合，
 ContikiではLatencyが増加することが伺える．
 同様に実験4から実験5のようなタスクの総数が増加した場合にも，
@@ -370,18 +378,161 @@ D-Switchでは，リアルタイムイベントが発行された際には，
 リアルタイムタスクの実行を行うことができるため，
 Latencyを低く維持することを可能にしている．
 
+D-SwitchにおけるLatencyが80msに収束しているのは，
+イベント発生から現在のコンテキストを保存するまでの時間だと推測される．
+それに対して，Contikiには実行中のタスクをプリエンプションしてリアルタイムタスクを
+行うことができないため，
+リアルタイムイベントが発生した場合でも，
+実行中のタスクの終了を待たなければならない．
+ContikiにおけるLatencyの最小値が80msとなっているのは，
+リアルタイムタスクが発生してから，
+前のタスクの実行が終了するまでの時間であると考えられる．
+
+
+\begin{figure}[htbp]
+ \begin{minipage}{0.5\hsize} \begin{center}
+     \includegraphics[width=70mm]{./images/d-switch_latency.eps}
+    \end{center}
+    \caption{D-Switch Latency}
+    \label{fig:d-switch_latency}
+ \end{minipage}
+ \begin{minipage}{0.5\hsize}
+    \begin{center}
+     \includegraphics[width=70mm]{./images/contiki_latency.eps}
+    \end{center}
+    \caption{Contiki Latency}
+    \label{fig:contiki_latency}
+ \end{minipage}
+\end{figure}
+
+
+
+
+\begin{figure}[htbp]
+ \begin{minipage}{0.5\hsize} \begin{center}
+     \includegraphics[width=70mm]{./images/cdf_d-switch.eps}
+    \end{center}
+    \caption{D-Switch 累積確率密度関数}
+    \label{fig:cdf_d-switch}
+ \end{minipage}
+ \begin{minipage}{0.5\hsize}
+    \begin{center}
+     \includegraphics[width=70mm]{./images/cdf_contiki.eps}
+    \end{center}
+    \caption{Contiki 累積確率密度関数}
+    \label{fig:cdf_contiki}
+ \end{minipage}
+\end{figure}
+
+
+
 
 \section{消費電力における評価}
 
 \subsection{評価環境}
+%消費電力に関する評価を行う際に，
+実機のMicaZを使用して，
+ランダムにリアルタイムイベントを発生させ，
+イベントを検知した場合，
+ベースステーションへと現在の電圧を送信するアプリケーションをデプロイし，
+実験を行った．
+その際，ContikiとD-Switchとで比較を行い，
+それぞれのシステムでタスクの総数を変化させる．
 
 
-\subsection{実験結果}
+\subsection{実験結果}\label{sec:result_consumption}
+図\ref{fig:power_consumption}は
+消費電力に関する実験結果を表している．
+本システムにおける電力消費は
+拡張前のContikiとほとんど差分がないことがわかる．
+
+
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=150mm]{./images/power_consumption.eps}
+ \end{center}
+ \caption{消費電力}
+ \label{fig:power_consumption}
+\end{figure}
+
 
 
 \subsection{考察}
+ここでは，\ref{sec:result_consumption}にて得られた結果について考察する．
+無線センサノードにおいては
+無線が最も電力を消費するモジュールのひとつであり，
+消費電力を抑えるためには
+単位時間あたりの無線利用を抑える必要がある．
+%無線センサノード用オペレーティングシステムの中で，
+%無線を直接管理，操作するのは，
+%無線チップのドライバ，および，MAC プロトコルである．
+%これまで，
+無線利用時間を低減するためのアプローチとして，
+無線センサネットワークに向けた，
+様々なMACプロトコルが提案されており，
+無線センサネットワーク向けMACプロトコルにおいて，
+定期的に無線を起動し，
+受信すべきデータが発信されているかを確認することで，
+無線利用時間を削減する手法を用いることが多い
+\cite{polastre2004versatile}．
+リアルタイム処理をサポートすることで，
+効率的に無線資源を利用し，
+無線の起動を定期的に行うことが可能となるため，
+それに伴って無線の起動時間を短縮することも可能となる．
+したがって，コンテキストスイッチングによる電力消費は大きいものの，
+周辺デバイスのオンとオフを素早く切り替えることができるようになった結果，
+電力の消費を抑えることができ，
+拡張前のContikiと同等の省エネルギー性を実現できたと考えられる．
+
+またNano-RK\cite{Eswaran:2005:NER:1106608.1106672}のような，
+一般的なスレッドモデルのオペレーティングシステムは
+それぞれのタスクに優先度が割り振られており，
+実行中のタスクよりも優先度の高いタスクが実行待ちになった場合，
+プリエンプションを行い，コンテキストスイッチングしていくこととなる．
+ゆえに優先度の高いタスクが実行待ちになる度にコンテキストを切り替えなければならないため，
+\ref{sec:comparison_between_event_and_threads}で述べたように，
+イベントモデルに比べて電力の消費が激しい．
+%消費電力に大きな差ができてしまう．
+しかしながら，本システムはすべてのタスクにおいて
+スレッドモデルのような挙動を行うのではなく，
+リアルタイムタスク以外の通常のタスクはイベントモデルのように
+扱われる．
+したがって，
+プリエンプション及び，コンテキストの切り替え回数を最小限に抑えることができたため，
+一般的なスレッドモデルで消費される電力よりも
+電力の消費を抑えることができ，
+このような結果に至ったと推測できる．
+
+
+%リアルタイム処理をサポートすることにより，
+%低消費電力での運用も実現可能となる．
+%リアルタイムタスクを効率的に処理可能なオペレーティングシステムと，
+%効率の悪いオペレーティングシステムを比較した場合，
+%前者の方が同じ精度のサービスを実現する場合に
+%低いクロックで動作することができる．
+%また，センサノード上では無線やセンサなどの
+%周辺デバイスは必要のないときにスリープされることで消費電力を抑えている．
+%このとき，リアルタイムタスクが処理可能ならば，
+%素早く周辺デバイスのオンとオフを
+%切り替えることができるようになるため，
+%低消費電力を維持することが期待される．
+%さらに，リアルタイム処理をサポートすることで，
+%効率的に無線資源を利用し，
+%無線通信に伴う電力を削減することができる．
 
 
 
 \section{まとめ}
 %本章では，まず，本研究に評価方針，実験環境を述べた．次に，実験環境内における実験への影響を調査するため，それぞれのリージョンからICMPにおける，Message Requestを送信し，リプライが返されるまでの時間（RTT）を計測した．その結果，RTTは0.400ms以内であり，十分に無視できることを述べた．次いで，保存ピア探索における計算コスト，データの保存に要する時間，データの取得に要する時間の観点から評価を行った．その結果から，考察を行い，理論値と実際の値に齟齬が存在することを明らかにし，その違いは，T-Ringにおいて，保存や取得の対象となるデータの時間情報の取得を行う際に要する時間により生じていることに言及した．
+本章では，まず，本研究の評価方針について述べ，
+次に，リアルタイム性における評価に関する
+評価環境を記し，実験結果について考察を行った．
+次いで，消費電力における評価に関しても同様に
+評価環境について述べ，
+実験結果に基づく考察を行い，
+%実験の結果，
+拡張する前のContikiにおける電力消費率にを大幅に変化を加えることなく，
+82ms以内のタスクの実行を可能にしたことを示した．
+
+
+

@@ -3,12 +3,12 @@
 
 \vspace{6.18mm}
 
-\textbf{\Large D-Switch: 無線センサネットワークにおけるオペレーティングシステムに対する動的なスイッチング機構}
+\textbf{\Large D-Switch: 無線センサネットワークにおけるオペレーティングシステムに対する動的なスケジューリングスイッチング機構}
 \end{center}
 
 \vspace{10mm}
 近年技術の発展によりセンサノードの低価格化，高性能化が進み，
-それに伴い，ネットワークに繋がる物理センサが自動的に多様なデータをやり取りし，
+それに伴いネットワークに繋がる物理センサが自動的に多様なデータをやり取りし，
 それらを様々な形で活用する無線センサネットワークが普及しつつある．
 主にその結果は，環境モニタリングやターゲットトラッキングにおいて
 顕著に表れており，センサネットワークが我々を支える生活基盤となり得る将来は遠くはない．
@@ -29,9 +29,12 @@ Protothreads\cite{Dunkels:2006:PSE:1182807.1182811}
 タスク実行中にさらに優先度の高いタスクの実行を要請された際に，
 スレッドモデルのように割り込みをし，タスクを切り替えることはできないのが現状である．
 
-本研究では，Protothreadsを利用し，
-上記ような時間的制約を伴ったイベントが発生する環境における，
-省電力なオペレーティングシステムについて提案する．
+本研究ではProtothreadsを利用し，
+%上記ような
+時間的制約を伴ったイベントが発生する環境における，
+%省電力なオペレーティングシステム
+オペレーティングシステムに対する動的なスケジューリングスイッチング機構
+を提案する．
 本システムは通常イベントモデルとしてタスクの実行を行うことで省電力を実現し，
 リアルタイム性の必要なタスク発生時には割り込みを発生させ，
 優先的にそのタスクの処理を行うことを可能にしている．
@@ -54,20 +57,25 @@ Protothreads\cite{Dunkels:2006:PSE:1182807.1182811}
 \textbf{\Large Academic Year 2014}
 \vspace{6.18mm}
 
-\textbf{\Large D-Switch: A Dynamic Switching System for Operating Systems in Wireless Sensor Networks}
+\textbf{\Large D-Switch: A Dynamically Switchable Scheduling System for Operating Systems in Wireless Sensor Networks}
 \end{center}
 
 \vspace{10mm}
 
 In recent years, 
 developed technology made 
-sensor nodes cheaper and high performance.
-As a result of this advanced technology, 
-Wireless Sensor Networks (WSN) 
-in which physical sensors connected with networks
-automatically transmit and receive various data 
-are constantly growing and used in various ways.
-In particular, the results are most remarkable
+sensor nodes cheaper and high performanced.
+%As a result of this advanced technology, 
+%Wireless Sensor Networks (WSN) 
+%where physical sensors connected with networks
+%automatically transmit and receive various data 
+%are constantly growing and used in various ways.
+Along with the advencement of technology,
+physical sensors connected to the network
+transmit and receive various datas automatically,
+and Wireless Sensor Networks (WSN) which use that datas in various ways are popularized.
+%In particular, the results are most remarkable
+In particular, the results are remarkable
 in environmental monitoring and target tracking.
 In the future, WSN will become the foundation of our life supporting. 
 
@@ -80,10 +88,13 @@ real time tasks have been processed
 for a long period.
 %for a long period,
 %such as environmental monitoring and target tracking.
-We can program applications easily
-with OS
-in events model which
-has the characteristics of threads model
+%We can program applications easily
+%with OS
+%in events model which
+%has the characteristics of threads model
+%Event-based OS perform the same behavior as 
+Event models like OS perform the same behavior as 
+threads model
 by using Protothreads\cite{Dunkels:2006:PSE:1182807.1182811} 
 in Contiki\cite{Dunkels:2004:CLF:1032658.1034117}
 proposed by Dunkels et al.
@@ -92,19 +103,29 @@ if a task which has more priority was posted
 while another task has been processed,
 the processed task cannot be interrupted,
 %and we cannot switch the processed task to the arrived task 
-and the processed task cannot be switched to the arrived task 
+%and the processed task cannot be switched to the arrived task 
+and cannot be switched to the arrived task 
 with Protothreads
 in the existing circumstances.
 
-In this research, we propose an energy-efficient operating system 
+In this research, we propose 
+%an energy-efficient operating system 
+%a dynamic scheduling switching system for operating systems 
+a dynamically switchable scheduling system for operating systems 
+%in wireless sensor networks
 using Protothreads
 in environments where events with time constraint occurred.
-In this system,
-tasks are usually executed as general events model OS, 
-which saves energy.
-If an event which requires real time processing occurred,
-current task will be interrupted and 
-real time task will be dealt with as priority.
+%In this system,
+%tasks are usually executed as general events model, 
+%which saves energy.
+%If an event which requires real time processing occurred,
+%current task will be interrupted and 
+%real time task will be dealt with as priority.
+This system enables to save energy by executing tasks 
+as a general events model,
+to trigger interruption, and 
+preferentially to process tasks 
+when real time task has been occurred.
 Finally, we evaluate this system and prove feasibility.
 
 
