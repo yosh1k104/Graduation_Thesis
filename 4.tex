@@ -3,8 +3,9 @@
 \chapter{問題提起}
 \begin{large}
 \begin{quote}
-本章では，最初にイベントモデルであるContikiにおいて
-スレッドモデルのように開発を行うことを可能にした
+本章では最初に，イベントモデルであるContikiにおいて，
+%スレッドモデルのように開発を行うことを可能にした
+スレッドモデルと同様にタスクを切り替えることを可能にした
 Protothreadsについて紹介する．
 その後，既存研究における問題意識について言及し，
 本研究における目的について述べる．
@@ -23,17 +24,20 @@ Protothreadsについて紹介する．
 ユーザが一連の処理を細かい処理に分割しなければならないため，
 プログラムが書き辛いという問題が発生する（Listing\ref{lst:non-protothreads}）．
 %TinyOSの例
-Contikiにおける，
+Contiki\cite{Dunkels:2004:CLF:1032658.1034117}における，
 Protothreads\cite{Dunkels:2006:PSE:1182807.1182811}は
 %イベント駆動型プログラムをマルチスレッド型のように
 %記述することができるため（Listing\ref{lst:using-protothreads}），
 イベントモデルでありながらもスレッドモデルと同様の挙動を行うことが
-できるため（Listing\ref{lst:using-protothreads}），
+できるため，
 %メモリのオーバヘッドを抑えつつ，
 電力の消費を抑えつつ，
 %イベント駆動型の欠点を補うことが可能となる．
 イベントモデルにおける開発を行うことが困難であるという
-欠点を補うことが可能となる．
+%欠点を補うことが可能となる
+欠点を補いながら
+（Listing\ref{lst:using-protothreads}），
+実行中のタスクを切り替えることを可能にしている．
 本節では，Protothreadsの機能について詳しく述べる．
 
 
@@ -44,6 +48,8 @@ struct pt {
 };
 
 
+static int counter = 0;
+static 
 char example(struct pt *pt) { 
     char PT_YIELD_FLAG = 1;
 
@@ -73,12 +79,15 @@ char example(struct pt *pt) {
 \end{lstlisting}
 
 
+\clearpage
 
 \begin{lstlisting}[caption=Protothredsを使用した場合, label={lst:using-protothreads}]
 #include"pt.h"
 
 
-PT_THREAD(example(structpt*pt)){
+static int counter = 0;
+static
+PT_THREAD(example(struct pt *pt)){
     PT_BEGIN(pt);
 
     while(1) {
@@ -94,8 +103,8 @@ PT_THREAD(example(structpt*pt)){
 
 
 
-\subsection{メモリ}
-スレッドモデルのオペレーティングシステムでは，
+\subsection{メモリ}\label{sec:memory}
+一般的なスレッドモデルのオペレーティングシステムでは，
 図\ref{fig:threads_stack}のようにそれぞれのスレッドにそれぞれのスタックを必要とする．
 しかし，メモリが制限されているセンサネットワークのようなシステムでは，
 スタック用のメモリは静的に保持されなければならないため，
@@ -121,37 +130,6 @@ Protothreadsを使用した場合，
  \caption{Protothreadsにおけるスタック}
  \label{fig:protothreads_stack}
 \end{figure}
-
-
-\subsection{タスクの切り替え}\label{sec:change_tasks}
-一般的なスレッドモデルのオペレーティングシステムは，
-タスクの割り込みがあった際には，
-レジスタの状態を保存することで変数の値を保持し，
-割り込まれたタスクの実行が終了したときに，
-再びレジスタから変数を読み込み，
-処理を途中から再開する．
-しかしながら，Protothreadsを使用した場合，
-状態をレジスタに保存することはせずに，
-戻り値を利用することでタスクのCPUの利用を放棄する．
-さらに，アプリケーション内の変数は静的な変数を採用しているため，
-電力の消費を抑えつつ，一貫性を保っている．
-
-戻り値をもとにしたタスクの切り替えを行う際には，
-スケジューラに対してプログラムのファイルの行数をreturnし，
-各タスクがCPU利用権限を再度取得したとき，
-行数を条件分岐し，前回中断した箇所から実行を
-再開することとなる（Listing\ref{lst:using-protothreads}）．
-ただし，現在実行中のタスクよりも優先度の高いタスクが実行待ちになった際に，
-他のマルチスレッドのオペレーティングシステムで実現されているように，
-ループ内の処理を実行しているタスクに割り込みをし，
-タスクを切り替えて実行することはできない．
-
-現在では，
-タスクを切り換える際にタイマー割り込みを目的とした利用をされていない．
-タイマーと現在時刻を比較し，
-発火時刻を過ぎている場合，タスクを実行待ちのキューへと加える．
-タイマーを実行するタスクは他のタスクと同じ優先度で周期的に実行される．
-
 
 
 
@@ -180,6 +158,9 @@ Contikiカーネル内のイベントキューに保持される．
 %The events on the event queue are delivered to the receiving process by the kernel.
 %The kernel loops through the event queue and 
 %delivers the events to the processes on the queue by invoking the processes.
+Contikiでは特に接頭語を付けずにイベントと表現される場合，
+そのイベントは非同期イベントを指す．
+また，イベントループ実行中に処理されるイベントはこの非同期イベントである．
 
 非同期イベントの受信プロセスはある特定のプロセスである場合と，
 すべての実行中のプロセスである場合がある．
@@ -193,8 +174,8 @@ Contikiカーネル内のイベントキューに保持される．
 %the kernel sequentially delivers the same event to all processes, 
 %one after another.
 
-非同期イベントはprocess\_post関数によってポストされる．
-process\_post関数ははじめにキュー内にイベントのためのメモリ空間があるかどうかを確認するために，
+非同期イベントは{\it process\_post}関数によってポストされる．
+{\it process\_post}関数ははじめにキュー内にイベントのためのメモリ空間があるかどうかを確認するために，
 現在のイベントキューのサイズを調べる．
 もしメモリに空きがなければエラーを返し，
 メモリに空きがあった際にはイベントをキューの最後に挿入する．
@@ -228,13 +209,15 @@ process\_post関数ははじめにキュー内にイベントのためのメモ�
 %Unlike asynchronous events, 
 %synchronous events are delivered directly when they are posted.
 %Synchronous events can only be posted to a specific processes.
+同期イベントはすべてのタスクを初期化する際にのみカーネルによって呼び出され，
+イベントループ内で同期イベントが発行されることはない．
 
 同期イベントは即座に実行されるため，
 同期イベントがポストされることは関数を呼び出すことに等しい．
 %Because synchronous events are delivered immediately,
 %posting a synchronous event is functionally equivalent to a function call: 
-すなわち，イベントを届けられたプロセスは直接よびだされ，
-イベントをポストしたプロセスは受信プロセスによるイベントの処理が終了するまで
+すなわち，同期イベントを届けられたプロセスは直接よびだされ，
+同期イベントをポストしたプロセスは受信プロセスによる同期イベントの処理が終了するまで
 他の処理を行うことはできない．
 %the process to which the event is delivered is directly invoked, 
 %and the process that posted the event is blocked until the receiving process has finished processing the event.
@@ -243,7 +226,7 @@ process\_post関数ははじめにキュー内にイベントのためのメモ�
 
 \begin{figure}[htbp]
  \begin{center}
-  \includegraphics[width=40mm]{./images/synchronous_event.eps}
+  \includegraphics[width=45mm]{./images/synchronous_event.eps}
  \end{center}
  \caption{同期イベントの実行}
  \label{fig:synchronous_event}
@@ -253,14 +236,15 @@ process\_post関数ははじめにキュー内にイベントのためのメモ�
 \subsubsection{ポーリング}
 
 \vspace{0.5em}ポーリングリクエストはその他のイベントと異なり，
-ポールされたプロセスはprocess\_poll関数によって呼び出され，
+%ポーリングされた
+プロセスは{\it process\_poll}関数によって呼び出され，
 この関数がプロセス上で呼び出されるとそのプロセスは可能な限り早急にスケジューリングされる．
 %ポーリングが行われたことをプロセスに知らせる特別なイベントを経由
 %A poll request is a special type of event. A process is polled by calling the function process\_poll().
 %Calling this function on a process causes the process to be scheduled as quickly as possible.
 %The process is passed a special event that informs the process that it has been polled.
 ポーリングはインタラプトからプロセスを実行させる手法のひとつであり，
-process\_poll関数はプリエンプティブモードから安全に呼び出される，
+{\it process\_poll}関数はプリエンプティブモードから安全に呼び出される，
 プロセスモジュールにおける唯一の関数である．
 %Polling is the way to make a process run from an interrupt.
 %The process\_poll() function is the only function in the process module that is safe to call from preemptive mode.
@@ -270,6 +254,45 @@ process\_poll関数はプリエンプティブモードから安全に呼び出�
 
 %\section{イベントタイマー}
 %Contikiオペレーティングシステムには
+
+
+
+
+\subsection{タスクの切り替え}\label{sec:change_tasks}
+一般的なスレッドモデルのオペレーティングシステムは，
+タスクの割り込みがあった際には，
+レジスタの状態を保存することで変数の値を保持し，
+割り込まれたタスクの実行が終了したときに
+再びレジスタから変数を読み込み，
+処理を途中から再開する．
+しかしながらProtothreadsを使用した場合，
+状態をレジスタに保存することはせずに，
+戻り値を利用することでタスクのCPUの利用を放棄する．
+コンテキストスイッチごとにレジスタ保持の処理を行わないため，
+エネルギーの節約を実現している．
+戻り値をもとにしたタスクの切り替えを行う際には，
+%スケジューラに対してプログラムのファイルの行数をreturnし，
+各タスクがプログラムのファイルの行数を保持し，
+スケジューラに対してそれぞれのタスクの状態をreturnすることで，
+各タスクがCPU利用権限を再度取得したとき，
+行数を条件分岐し，前回中断した箇所から実行を
+再開することとなる（Listing\ref{lst:non-protothreads}）．
+%さらに，
+アプリケーション内の変数は静的な変数を採用しているため，
+電力の消費を抑えつつ，一貫性を保っているが，
+%ただし，
+現在実行中のタスクよりも優先度の高いタスクが実行待ちになった際に，
+他のマルチスレッドモデルのオペレーティングシステムで実現されているように，
+ループ内の処理を実行しているタスクに割り込みをし，
+タスクを切り替えて実行することはできない．
+これはタスクがreturnを発行するまでスケジューラが実行されないためである．
+
+また現在では，
+タスクを切り換える際にタイマー割り込みを目的とした利用をされていない．
+タイマーと現在時刻を比較し，
+発火時刻を過ぎている場合，タスクを実行待ちのキューへと加える．
+タイマーを実行するタスクは他のタスクと同じ優先度で周期的に実行される．
+
 
 
 
@@ -300,11 +323,17 @@ First In First Out（FIFO）の要領でイベントを呼び出している（�
 %前述のとおり，一般的なマルチスレッド型のオペレーティングシステムでは，
 %スレッド切り替え時にレジスタの状態を保存するのに対して，
 
-さらにProtothreadsでは，現在実行中のタスクよりも優先度の高いタスクが実行待ちになった際に，
-他のマルチスレッドのオペレーティングシステムで実現されているように，
+さらに\ref{sec:change_tasks}にて，
+Protothreadsでは現在実行中のタスクよりも優先度の高いタスクが実行待ちになった際に，
+他のマルチスレッドモデルのオペレーティングシステムで実現されているように，
 ループ内の処理を実行しているタスクに割り込みをし，
-タスクを切り替えて実行することはできない．
-これはタスクがreturnを発行するまでスケジューラが実行されないためである．
+タスクを切り替えて実行することはできないことについて述べた．
+%これはタスクがreturnを発行するまでスケジューラが実行されないためである．
+これは実行中のタスクのCPUの利用が放棄されるまで，
+リアルタイム処理の必要なタスクの実行が開始されないことを示しており，
+タスクの実行が長期にわたって行われる場合，
+リアルタイムタスクの実行が遅れる原因となり得る．
+
 
 
 \section{本研究の目的}\label{sec:objective}
@@ -316,22 +345,12 @@ First In First Out（FIFO）の要領でイベントを呼び出している（�
 
 
 \section{まとめ}
-%本章では，まず，保存ピアの計算量を削減し，Synapseよりもデータ管理の時間的密度が高いアルゴリズムを提案することを述べた．次に，T-Ringにおいて時間という属性をDHTにおける保存ピアの決定における一つ要素としてではなく，保存ピアの変更を行うための要素として扱うことを述べた．そして，時間的密度，計算コストの観点から集中管理，Synapse，T-Ringの3つの手法の比較を行った．また，センサデータの時間的特殊性に着目した多次元センサデータ分散管理システムであるT-Ringの詳細な設計概念，設計実装について述べた．T-RingはP2Pのトポロジとして，代表的なアルゴリズムであるChordに準拠した1Dトーラスを用いている．保存ピアの参加や離脱なども同様にChordに準拠している．また，多次元データを扱うにあたり，Z-orderにより1次元化に言及した．時間的特殊性については，chunkとSPという2つの時間概念を導入し，保存ピア変更の基準とした．また，ユーザがT-Ringシステムを用いて，データ取得のクエリを送る際の，形式を定義した．
-
-
 本章では，まず，主流となるイベントモデルのオペレーティングシステムであるContikiに実装されている
 Protothreadsを紹介し，
-メモリ，タスクの切り替え，イベントというそれぞれの観点から考察を行った．
+メモリ，イベント，タスクの切り替えというそれぞれの観点から考察を行った．
 次に，既存の無線センサネットワークにおけるオペレーティングシステムの
 各モデルについて問題点を挙げ，
 続いてProtothreadsを使用する際に注意すべきことについて言及し，
 最後に本研究の目的について記した．
-
-
-
-
-
-
-
 
 

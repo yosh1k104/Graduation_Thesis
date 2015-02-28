@@ -18,13 +18,14 @@
 %環境モニタリングやターゲットトラッキングなどの
 リアルタイム性のある処理が
 長期間にわたって行われるような環境では，
-それらのモデルのどちらかを選択することは望ましくない．
-Dunkelsらの開発したContiki\cite{Dunkels:2004:CLF:1032658.1034117}
-では，
+%それらのモデルのどちらかを選択することは望ましくない．
+どちらのモデルも要件をすべて満たすには至っていない．
+Dunkelsらの開発したContiki\cite{Dunkels:2004:CLF:1032658.1034117}では，
 Protothreads\cite{Dunkels:2006:PSE:1182807.1182811}
 というシステムを採用することで，
 %イベントモデルでありながらもスレッドモデルのようなプログラムの記述を実現している．
-イベントモデルでありながらもスレッドモデルと同様の挙動を行うことができる．
+%イベントモデルでありながらもスレッドモデルと同様の挙動を行うことができる．
+イベントモデルでありながらもスレッドモデルと同様にタスクの切り替えを行うことができる．
 しかしながら，Protothreadsを採用した場合でも，
 タスク実行中にさらに優先度の高いタスクの実行を要請された際に，
 スレッドモデルのように割り込みをし，タスクを切り替えることはできないのが現状である．
@@ -46,7 +47,7 @@ Protothreads\cite{Dunkels:2006:PSE:1182807.1182811}
 \hspace{3.5em}無線センサネットワーク，環境モニタリング，ターゲットトラッキング，オペレーティングシステム，リアルタイム処理
 
 \begin{flushright}
-\textbf{慶応義塾大学環境情報学部}\\
+\textbf{慶應義塾大学環境情報学部}\\
 \textbf{小町 芳樹}
 \end{flushright}
 
@@ -81,8 +82,10 @@ In the future, WSN will become the foundation of our life supporting.
 
 Operating Systems (OS) in WSN
 are divided into events model and threads model.
-However, it is undesireble to 
-select OS from these models  
+%However, it is undesireble to 
+%select OS from these models  
+However, neither one of these models has still fulfilled 
+all of those requirements
 in environments where 
 real time tasks have been processed 
 for a long period.
@@ -93,7 +96,9 @@ for a long period.
 %in events model which
 %has the characteristics of threads model
 %Event-based OS perform the same behavior as 
-Event models like OS perform the same behavior as 
+%Event models like OS perform the same behavior as 
+%threads model
+Event models like OS can switch tasks as same as 
 threads model
 by using Protothreads\cite{Dunkels:2006:PSE:1182807.1182811} 
 in Contiki\cite{Dunkels:2004:CLF:1032658.1034117}

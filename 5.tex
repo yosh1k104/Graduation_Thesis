@@ -52,7 +52,7 @@
 野生動物の生態調査を行う際にも，
 %調査対象の特徴によっては，
 現地調査を複数回行うことが困難となる場合もあるため，
-資源の限られたセンサノードにおいて低オーバヘッドを
+資源の限られたセンサノードにおいて低消費電力を
 維持することは極めて重要である．
 %無線センサネットワークに用いられる小型デバイスにおける
 %バッテリの駆動時間は，一般的なラップトップなどと比較して
@@ -76,7 +76,7 @@
 
 
 
-\subsection{システム概要}
+\subsection{システム概要}\label{sec:system_overview}
 %本研究では，Contikiにスケジューラを実装することで，
 %省資源性かつ低オーバヘッドを実現する．
 前述のとおり，Contiki\cite{Dunkels:2004:CLF:1032658.1034117}
@@ -115,11 +115,8 @@ ContikiにおけるProtothreads\cite{Dunkels:2006:PSE:1182807.1182811}は，
 %複数のスレッドから構成され，
 %各スレッドはそれぞれ独立に実行ストリームを持っており，
 %低い優先度のスレッドは高い優先度のスレッドにプリエンプションされるという特徴を持つ．
-また，本システムではリアルタイムタスク実行中における
-多重割り込みはしないものとする．
-
-
-
+%また，本システムではリアルタイムタスク実行中における
+%多重割り込みはしないものとする．
 
 
 %イベントモデルではイベント駆動型プログラミングによってアプリケーションが記述される．
@@ -128,9 +125,6 @@ ContikiにおけるProtothreads\cite{Dunkels:2006:PSE:1182807.1182811}は，
 %つまり，イベントモデルはタスクは関数呼び出しと等価であり，
 %実行ストリームがひとつで実現されるため各タスクでローカル変数の領域を共有可能であることから，
 %省資源かつ低オーバヘッドで並列性を実現できる．
-
-
-
 
 
 %イベントモデルで構築されたオペレーティングシステムは全てのタスクをイベントによって起動し，
@@ -206,8 +200,9 @@ ContikiにおけるProtothreads\cite{Dunkels:2006:PSE:1182807.1182811}は，
 
 \subsubsection{タスク管理モジュール}
 
-\vspace{0.5em}ここではタスク初期化モジュールにて，
-登録されたタスクをタスクリストに登録し，
+\vspace{0.5em}ここでは
+%タスク初期化モジュールにて，
+%登録されたタスクをタスクリストに登録し，
 スケジューリングアルゴリズムに従って，
 タイマー管理モジュールによってポストされるタスクを
 実行される順番に並び替える．
@@ -296,13 +291,10 @@ ContikiにおけるProtothreads\cite{Dunkels:2006:PSE:1182807.1182811}は，
 割り込み発生前の状態を復元する．
 
 
-
-
-
-
-
-
-%\subsection{スケジューリングアルゴリズム}
+\subsection{リミテーション}
+本研究では，リアルタイム処理実行中に割り込みをし，
+新しいリアルタイムタスクの実行をする多重割り込みをサポートしていない．
+また，多数のリアルタイムイベントが頻繁に発生するような環境も今回は想定しない．
 
 
 
@@ -334,6 +326,31 @@ ContikiにおけるProtothreads\cite{Dunkels:2006:PSE:1182807.1182811}は，
 
 
 
+\subsection{メモリ}
+\ref{sec:memory}で一般的なスレッドモデルにおけるスタックと
+Protothreadsにおけるスタックの違いについて述べたが，
+ここでは本システムにおけるスタックについて言及する．
+%本システムにおけるスタックは図\ref{fig:d-switch_stack}に示す．
+本システムでは，通常のタスクに関しては
+Protothreadsを用いて省電力なタスクの切り替えを実現し，
+リアルタイムタスクは割り込みを発生させタスクを切り替えることを
+\ref{sec:system_overview}にて述べた．
+したがって，本システムにおけるスタックは図\ref{fig:d-switch_stack}のようになり，
+一般的なスレッドモデルのオペレーティングシステムよりも
+メモリを節約することに成功している．
+
+
+\begin{figure}[htbp]
+ \begin{center}
+  \includegraphics[width=77.5mm]{./images/d-switch_stack.eps}
+ \end{center}
+ \caption{D-Switchにおけるスタック}
+ \label{fig:d-switch_stack}
+\end{figure}
+
+
+
+
 \subsection{タスクの状態遷移}
 本システムで実行されるタスクには
 図\ref{fig:state_transition}のような4種類の状態があり，
@@ -341,16 +358,16 @@ ContikiにおけるProtothreads\cite{Dunkels:2006:PSE:1182807.1182811}は，
 ここではタスクの状態の変遷について説明する．
 
 アプリケーションがシステムにデプロイされると，
-process\_start関数が実行され，状態はPROCESS\_STATE\_NONEから，
+{\it process\_start}関数が実行され，状態はPROCESS\_STATE\_NONEから，
 PROCESS\_STATE\_RUNNINGへと変化する．
 すべてのタスクはPROCESS\_STATE\_NONE状態から
-PROCESS\_STATE\_RUNNINGへと切り換えられることで，
+PROCESS\_STATE\_RUNNINGへと切り替えられることで，
 実行される準備が整えられる．
 つまり，カーネルの保持するタスクリストに
 登録されているタスクはすべて，PROCESS\_STATE\_RUNNING
 状態で実行までの間待機することとなる．
 
-タスクが実行される際には，call\_process関数により，
+タスクが実行される際には，{\it call\_process}関数により，
 スケジューリングされたタスクリストの中から
 最も優先度の高いタスクが実行され，
 PROCESS\_STATE\_RUNNINGからPROCESS\_STATE\_CALLEDとなる．
@@ -361,19 +378,16 @@ PROCESS\_STATE\_RUNNING状態に戻り，
 
 タスクが実行されている最中に，
 リアルタイムタスクによる割り込みが発生した場合，
-process\_suspendが実行され，
+{\it process\_suspend}が実行され，
 状態はPROCESS\_STATE\_SUSPENDEDへと遷移する．
 再びタスクが再開されるとき，
-process\_resumeによりPROCESS\_STATE\_CALLED状態に復帰し，
+{\it process\_resume}によりPROCESS\_STATE\_CALLED状態に復帰し，
 中断した処理の続きを行う．
 
 タスクが終了されるとき，
-exit\_process関数は対象とされるタスクの状態を
+{\it exit\_process}関数は対象とされるタスクの状態を
 PROCESS\_STATE\_NONEに変更し，
 状態の変わったタスクはタスクリストから消去される．
-
-\clearpage
-
 
 
 \begin{figure}[htbp]
